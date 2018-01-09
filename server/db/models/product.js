@@ -6,10 +6,13 @@ const Product = db.define('product', {
     type: Sequelize.STRING
   },
   description: {
-    type: Sequelize.BLOB
+    type: Sequelize.TEXT
   },
   price: {
-    type: Sequelize.DOUBLE
+    type: Sequelize.DECIMAL
+  },
+  imageURL: {
+    type: Sequelize.STRING
   }
 });
 
