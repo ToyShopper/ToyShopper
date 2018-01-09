@@ -22,10 +22,13 @@ const User = db.define('user', {
   },
   lastName: {
     type: Sequelize.STRING
+  },
+  address: {
+    type: Sequelize.BLOB
   }
-})
+});
 
-module.exports = User
+module.exports = User;
 
 /**
  * instanceMethods
