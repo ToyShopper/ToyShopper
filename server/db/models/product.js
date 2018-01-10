@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 
 const Product = db.define('product', {
-  name: {
+  title: {
     type: Sequelize.STRING
   },
   description: {
@@ -12,7 +12,11 @@ const Product = db.define('product', {
     type: Sequelize.DECIMAL
   },
   imageURL: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    defaultValue: 'https://target.scene7.com/is/image/Target/14025792?wid=520&hei=520&fmt=pjpeg'
+  },
+  quantity: {
+    type: Sequelize.INTEGER
   }
 });
 
