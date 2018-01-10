@@ -2,17 +2,17 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 
 const Product = db.define('product', {
-  name: {
+  title: {
     type: Sequelize.STRING
   },
   description: {
     type: Sequelize.TEXT
   },
   price: {
-    type: Sequelize.DECIMAL,
-    get() {
-      return '$' + this.getDataValue('price').toLocaleString('en-US', { style: 'currency', currency: 'USD'});
-    }
+    type: Sequelize.DECIMAL// this will format the price: ,
+    // get() {
+    //   return '$' + this.getDataValue('price').toLocaleString('en-US', { style: 'currency', currency: 'USD'});
+    // }
   },
   imageURL: {
     type: Sequelize.STRING,

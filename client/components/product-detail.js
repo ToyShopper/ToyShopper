@@ -17,7 +17,7 @@ class ProductDetail extends Component {
         <h1>Product Detail</h1>
         <img src={product.imageURL} />
         <br />
-        {product.name}
+        {product.title}
         <br />
         <p>Price: ${product.price}</p>
         <button>Add to Cart</button>

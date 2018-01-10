@@ -22,7 +22,7 @@ class Products extends Component {
                 <li key={product.id}>
                   <img src={product.imageURL} />
                   <br />
-                  <Link to={'/products/' + product.id}>{product.name}</Link>
+                  <Link to={'/products/' + product.id}>{product.title}</Link>
                   <p>Price: ${product.price}</p>
                 </li>
               ))
