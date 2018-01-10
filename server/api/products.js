@@ -1,5 +1,9 @@
 const router = require('express').Router()
 const { Product } = require('../db/models')
+const { Review } = require('../db/models')
+const { User } = require('../db/models')
+
+
 module.exports = router
 
 router.get('/', (req, res, next) => {
@@ -16,3 +20,17 @@ router.get('/:id', (req, res, next) => {
   .then(product => res.json(product))
   .catch(next)
 })
+
+router.get('/:id/reviews', (req, res, next) => {
+  Review.findAll({
+    where: {
+      productId: req.params.id
+    },
+    include: [{
+      model: User,
+      attributes: ['firstName', 'lastName']
+    }]
+  })
+  .then(reviews => res.json(reviews))
+  .catch(next);
+});

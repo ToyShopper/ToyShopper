@@ -47,13 +47,13 @@ const User = db.define('user', {
     get() {
       return this.getDataValue('firstName') + ' ' + this.getDataValue('lastName');
     }
-  },
-  address: {
-    type: Sequelize.VIRTUAL,
-    get() {
-      return this.getDataValue('streetAddress') + '\n' + this.getDataValue('city') + ', ' + this.getDataValue('state') + ' ' + this.getDataValue('zipCode');
-    }
-  }
+  }// this would output full address, but it mess up eager loading on api/id/reviews,
+  // address: {
+  //   type: Sequelize.VIRTUAL,
+  //   get() {
+  //     return this.getDataValue('streetAddress') + '\n' + this.getDataValue('city') + ', ' + this.getDataValue('state') + ' ' + this.getDataValue('zipCode');
+  //   }
+  // }
 });
 
 module.exports = User;
