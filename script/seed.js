@@ -32,7 +32,12 @@ async function seed () {
     Product.create({name: 'Baby Starters Sock Monkey Blanket', price: 17.99, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51+8BLb2OSL._AC_US240_FMwebp_QL65_.jpg'}),
     Product.create({name: 'Babystarters Sock Monkey Sweater Knit Plush Toy', price: 21.00, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51ckaVeINkL._AC_US240_FMwebp_QL65_.jpg'})
   ])
-  .then(products => console.log(products))
+  .then(products => {
+    console.log(products);
+    products.forEach(product => {
+      product.setProductCategory(1);
+    });
+  })
   .catch(err => {
     console.error(err.message)
     console.error(err.stack)
