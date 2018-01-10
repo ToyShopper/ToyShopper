@@ -6,7 +6,8 @@ const User = db.define('user', {
   email: {
     type: Sequelize.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
+    validate: {isEmail: true}
   },
   password: {
     type: Sequelize.STRING
@@ -23,8 +24,35 @@ const User = db.define('user', {
   lastName: {
     type: Sequelize.STRING
   },
+  streetAddress: {
+    type: Sequelize.STRING
+  },
+  city: {
+    type: Sequelize.STRING
+  },
+  zipCode: {
+    type: Sequelize.INTEGER,
+    validate: {
+      len: 5
+    }
+  },
+  state: {
+    type: Sequelize.STRING,
+    validate: {
+      len: 2
+    }
+  },
+  fullName: {
+    type: Sequelize.VIRTUAL,
+    get() {
+      return this.getDataValue('firstName') + ' ' + this.getDataValue('lastName');
+    }
+  },
   address: {
-    type: Sequelize.BLOB
+    type: Sequelize.VIRTUAL,
+    get() {
+      return this.getDataValue('streetAddress') + '\n' + this.getDataValue('city') + ', ' + this.getDataValue('state') + ' ' + this.getDataValue('zipCode');
+    }
   }
 });
 
