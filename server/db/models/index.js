@@ -23,7 +23,7 @@ const Review = require('./review');
 Order.belongsTo(User);
 Order.hasMany(OrderItem);
 OrderItem.belongsTo(Product);
-Product.belongsTo(ProductCategory);
+Product.belongsTo(ProductCategory, {as: 'Category'});
 Review.belongsTo(Product);
 Review.belongsTo(User);
 
