@@ -12,8 +12,6 @@ class Products extends Component {
 
   render() {
     const {products} = this.props;
-    console.log('props:', this.props);
-    console.log('products:', products);
     return (
       <div>
         <h1>All Products</h1>
