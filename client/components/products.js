@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchProducts } from '../store/products';
+import { fetchProducts, fetchProductsByCategory } from '../store/products';
 
 /* -----------------    COMPONENT     ------------------ */
 
 class Products extends Component {
   componentDidMount() {
-    this.props.loadProducts();
+      this.props.loadProducts();
   }
 
   render() {
     const {products} = this.props;
     return (
       <div>
-        <h1>All Products</h1>
+      {(this.props.match) ? (
+        <h1>All {this.props.match.params.category} Products </h1>
+      ) :
+        (<h1>All Products</h1>) }
         {products.length > 0 &&
           <ul>
             {
@@ -38,8 +41,15 @@ class Products extends Component {
 
 const mapState = ({ products }) => ({ products });
 
-const mapDispatch = dispatch => ({
-  loadProducts: () => dispatch(fetchProducts())
+const mapAllDispatch = dispatch => ({
+  loadProducts: () => dispatch(fetchProducts()),
 });
+const mapFilteredDispatch = (dispatch, ownProps) => ({
+  loadProducts: () => dispatch(fetchProductsByCategory(ownProps.match.params.category))
+});
+// const mapSearchDispatch = (dispatch, ownProps) => ({
+//   loadProducts: () => dispatch(fetchProductsBySearch(//ownprops.match.queryString))
+// })
 
-export default connect(mapState, mapDispatch)(Products);
+export const AllProducts = connect(mapState, mapAllDispatch)(Products);
+export const ProductsByCategory = connect(mapState, mapFilteredDispatch)(Products);
