@@ -42,6 +42,9 @@ const User = db.define('user', {
       len: 2
     }
   },
+  role: {
+    type: Sequelize.ENUM('admin', 'user')
+  },
   fullName: {
     type: Sequelize.VIRTUAL,
     get() {

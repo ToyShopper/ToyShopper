@@ -19,8 +19,8 @@ async function seed () {
   // executed until that promise resolves!
 
   const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123', firstName: 'Cody', lastName: 'G', streetAddress: '123 Maple Ave', city: 'New York', state: 'NY', zipCode: '10001'}),
-    User.create({email: 'murphy@email.com', password: '123', firstName: 'Murph', lastName: 'Y', streetAddress: '456 Elm Stret', city: 'New Orleans', state: 'LA', zipCode: '70118'}),
+    User.create({email: 'cody@email.com', password: '123', firstName: 'Cody', lastName: 'G', streetAddress: '123 Maple Ave', city: 'New York', state: 'NY', zipCode: '10001', role: 'admin'}),
+    User.create({email: 'murphy@email.com', password: '123', firstName: 'Murph', lastName: 'Y', streetAddress: '456 Elm Stret', city: 'New Orleans', state: 'LA', zipCode: '70118', role: 'user'}),
   ]);
 
   const categories = await Promise.all([
