@@ -20,13 +20,13 @@ const updateUser = updatedUser => ({
 // THUNK CREATORS
 
 export const fetchUsers = () =>  dispatch => {
-    axios.get('/api/users')
+    axios.get('/api/users/')
     .then(res => dispatch(getUsers(res.data)) )
     .catch(err => console.log(err));
 };
 
 export const putUser = (updatedUser, userId) => dispatch => {
-  axios.put('/api/user' + userId, updatedUser)
+  axios.put('/api/users/' + userId, updatedUser)
     .then(() => {
       dispatch(fetchUsers());
     })

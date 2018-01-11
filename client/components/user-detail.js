@@ -17,8 +17,8 @@ class UserDetail extends Component {
       <div>
         <form onSubmit={handleSubmit}>
           <div>
-            <label>First Name: </label>
-            <input type="text" name="firstName" value={userToEdit.firstName}/>
+            <label>First Name: {userToEdit.firstName}</label>
+            <input type="text" name="firstName" defaultValue={userToEdit.firstName}/>
           </div>
           <div>
             <label>Last Name: </label>
@@ -70,7 +70,7 @@ const mapDispatch = (dispatch, ownProps) => ({
   },
   handleSubmit (event) {
     event.preventDefault();
-    const userId = ownProps.match.params.userId; //maybe id instead of productId
+    const userId = ownProps.match.params.id; //maybe id instead of productId
     const user = {
       firstName: event.target.firstName.value,
       lastName: event.target.lastName.value,

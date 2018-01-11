@@ -16,10 +16,12 @@ class UserList extends Component {
         {users.length > 0 &&
           <ul>
             {users.map(user => (
+              console.log(user.isAdmin)
               <li key={user.id}>
               <Link to={'/users/' + user.id} >
-                {user.fullName}
+                {user.isAdmin} {user.isAdmin}
               </Link>
+              <button>{user.isAdmin ? 'Demote User' : 'Promote User'}</button>
               </li>
             ))}
           </ul>
