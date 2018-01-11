@@ -16,15 +16,29 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
+// OB/DK: this route is not exactly modern RESTful standard
+/*
+GET /api/products/category/apparelOrWhatever <= does this come back with products? or categories?
+...or...
+GET /api/products/apparelOrWhatever <= also potentially unclear
+...consider...
+GET /api/categories/apparelOrWhatever/products <= this is more standard
+...or...
+GET /api/products?categoryName=apparelOrWhatever <= also standard
+*/
 router.get('/category/:category', (req, res, next) => {
   ProductCategory.findOne({where:{name:req.params.category}})
   .then(category => {
     return category.id})
     .then(id => {
-      Product.findAll({where:{id}})
+      // OB/DK: looks like you're using a category ID to find a product
+      Product.findAll({where:{id}}) // OB/DK: watch out, this will resolve with an array of products
+      // OB/DK: nested .then below (could lead to issues)
       .then(product => res.json(product))
     })
+    // OB/DK: no .catch
   })
+// OB/DK: funky indentation above
 
 
 router.get('/:id', (req, res, next) => {
@@ -33,7 +47,7 @@ router.get('/:id', (req, res, next) => {
   .catch(next)
 })
 
-
+// OB/DK: could do a query string here instead, e.g. /api/reviews?productId=4
 router.get('/:id/reviews', (req, res, next) => {
   Review.findAll({
     where: {

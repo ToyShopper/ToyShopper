@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Route, Switch, Router} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
+// OB/DK: some merge conflict was unresolved
 <<<<<<< HEAD
 import {Main, Login, Signup, UserHome, Products, ProductDetail, UserList, UserDetail} from './components'
 =======

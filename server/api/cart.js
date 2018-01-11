@@ -1,4 +1,5 @@
 const router = require('express').Router()
+// OB/DK: dead code
 //const { Product } = require('../db/models')
 
 router.get('/', (req, res, next) => {
@@ -6,6 +7,8 @@ router.get('/', (req, res, next) => {
   res.json(cart);
 })
 
+// OB/DK: the router handler body is a little long, consider making utility functions for the cart, or a cart class
+// OB/DK: consider renaming the route POST /api/cart/items
 router.post('/', (req, res, next) => {
   // item
   // {id: 1, title: 'sample product', price: 19.99, quantity: 2}
@@ -24,6 +27,7 @@ router.post('/', (req, res, next) => {
   res.json(req.session.cart);
 });
 
+// OB/DK: consider renaming to DELETE /api/cart/items
 router.delete('/:id', (req, res, next) => {
   let cart = req.session.cart || { items: {}, total: 0 };
   const itemId = req.params.id;

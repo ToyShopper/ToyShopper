@@ -33,12 +33,14 @@ export const addToCart = (item) => dispatch => {
 export const removeFromCart = (item) => dispatch => {
   axios.delete('/api/cart/' + item.id)
   .then(res => dispatch(removeItemFromCart(res.data)))
+  // OB/DK: ideally report errors to the user, not the developer, e.g. this: https://tomchentw.github.io/react-toastr/
   .catch(err => console.log(err));
 }
 
 /**
  * REDUCER
  */
+// OB/DK: you could reduce all the actions into one, maybe called "SET_CART"
 export default function (state = {items: {}, total: 0}, action) {
   switch (action.type) {
     case GET_CART:

@@ -34,6 +34,7 @@ export const fetchProductsByCategory = (category) =>
  */
 export default function (state = [], action) {
   switch (action.type) {
+    // OB/DK: redundant actions, could combine
     case GET_PRODUCTS:
       return action.products
     case GET_PRODUCTS_BY_CATEGORY:

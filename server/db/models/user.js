@@ -51,7 +51,9 @@ const User = db.define('user', {
     get() {
       return this.getDataValue('firstName') + ' ' + this.getDataValue('lastName');
     }
-  }// this would output full address, but it mess up eager loading on api/id/reviews,
+  }
+  // OB/DK: more dead code
+  // this would output full address, but it mess up eager loading on api/id/reviews,
   // address: {
   //   type: Sequelize.VIRTUAL,
   //   get() {

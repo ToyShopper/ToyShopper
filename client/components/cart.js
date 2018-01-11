@@ -11,6 +11,7 @@ class Cart extends Component {
 
   render() {
     const { cart, removeItem } = this.props;
+    // OB/DK: dead log, driftwood, burn it
     console.log(cart);
     return (
       <div>

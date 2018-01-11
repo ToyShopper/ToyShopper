@@ -31,6 +31,10 @@ class UserList extends Component {
 
 const mapState = ({ users }) => ({ users });
 
+// OB/DK: can use the object format for mapDispatchToProps for straightforward / common cases like below
+/*
+const mapDispatch = {loadUsers: fetchUsers};
+*/
 const mapDispatch = dispatch => ({
   loadUsers: () => dispatch(fetchUsers())
 });

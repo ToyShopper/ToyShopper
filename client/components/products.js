@@ -7,6 +7,7 @@ import { fetchProducts, fetchProductsByCategory } from '../store/products';
 
 class Products extends Component {
   componentDidMount() {
+    // OB/DK: incostintent indentation here
       this.props.loadProducts();
   }
 
