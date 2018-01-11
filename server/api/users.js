@@ -20,12 +20,12 @@ router.get('/:id/', (req, res, next) => {
 });
 
 router.put('/:id/', function (req, res, next) {
-  console.log(req.body)
-  User.update({
-    isAdmin: true
-  }, {
-    where: {id: req.params.id}
+  User.update(req.body, {
+    where: {id: req.params.id},
+    returning: true,
+    plain: true
   }
   )
-  .then(user => res.json(user));
+  .then(() => res.status(204).end())
+  .catch(next);
 });

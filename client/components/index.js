@@ -9,3 +9,5 @@ export {Login, Signup} from './auth-form'
 export {default as Products} from './products'
 export {default as ProductDetail} from './product-detail'
 export {default as UserList} from './user-list'
+export {default as UserDetail} from './user-detail'
+

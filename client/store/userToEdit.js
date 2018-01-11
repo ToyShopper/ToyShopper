@@ -14,8 +14,10 @@ const getUserToEdit = user => ({type: GET_USER_TO_EDIT, user});
 export const fetchUserDetail = (userId) =>
   dispatch =>
     axios.get('api/users/' +  userId)
-      .then(res =>
-        dispatch(getUserToEdit(res.data)))
+      .then(res => {
+        console.log('hits thunk', userId, history)
+        return dispatch(getUserToEdit(res.data));
+      })
       .catch(err => console.log(err));
 
 // REDUCER
