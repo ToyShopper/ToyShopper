@@ -21,6 +21,7 @@ const Main = (props) => {
           <Link to="/home">Home</Link>
           <Link to="/products">Products</Link>
           <Link to="/cart">Cart</Link>
+          <Link to="/users">Users</Link>
         </div>
         {
           isLoggedIn
