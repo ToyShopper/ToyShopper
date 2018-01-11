@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchUsers, putUser } from '../store/users';
+import { fetchUsers, putUser, deleteUser } from '../store/users';
 
 class UserList extends Component {
   componentDidMount() {
@@ -18,6 +18,7 @@ class UserList extends Component {
               <li key={user.id}>
                 {user.fullName}
                 <button name={user.id} onClick={() => this.props.changeUserRole(user)}>{user.role === 'admin' ? 'Demote User' : 'Promote User'}</button>
+                <button name={user.id} onClick={() => this.props.removeUser(user.id)}>Delete User</button>
               </li>
             ))}
           </ul>
@@ -36,6 +37,9 @@ const mapDispatch = dispatch => ({
     user.role === 'admin' ? role = 'user' : role = 'admin';
     const updateUser = {role};
     return dispatch(putUser(updateUser, user.id))
+  },
+  removeUser: (userId) => {
+    return dispatch(deleteUser(userId));
   }
 });
 
