@@ -10,15 +10,15 @@ class UserDetail extends Component {
   }
 
   render() {
-    console.log('render detail', this.props)
     const {userToEdit} = this.props;
     const {handleSubmit} = this.props;
+    //console.log(userToEdit)
     return (
       <div>
         <form onSubmit={handleSubmit}>
           <div>
             <label>First Name: </label>
-            <input type="text" name="firstName" defaultValue={userToEdit.firstName}/>
+            <input type="text" name="firstName" value={userToEdit.firstName}/>
           </div>
           <div>
             <label>Last Name: </label>
