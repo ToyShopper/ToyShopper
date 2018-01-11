@@ -32,8 +32,6 @@ const mapState = ({ users }) => ({ users });
 const mapDispatch = dispatch => ({
   loadUsers: () => dispatch(fetchUsers()),
   changeUserRole: (user) => {
-    console.log(user)
-    //console.log(event.target.role)
     let role = ''
     user.role === 'admin' ? role = 'user' : role = 'admin';
     const updateUser = {role};
