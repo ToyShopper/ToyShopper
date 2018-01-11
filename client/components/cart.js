@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCart } from '../store/cart';
+import { fetchCart, removeFromCart } from '../store/cart';
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -10,13 +10,13 @@ class Cart extends Component {
   }
 
   render() {
-    const { cart } = this.props;
+    const { cart, removeItem } = this.props;
     console.log(cart);
     return (
       <div>
         <h1>Shopping Cart</h1>
-        {!cart.items ?
-          (<p>Your shopping cart is empty</p>) :
+        {!(Object.keys(cart.items).length > 0) ?
+          (<p>Your shopping cart is empty.</p>) :
           (
             <ul>
               {
@@ -28,6 +28,7 @@ class Cart extends Component {
                       <p>{item.title}</p>
                       <p>Price: ${item.price}</p>
                       <p>Quantity: {item.quantity}</p>
+                      <button onClick={() => removeItem(item)}>Remove</button>
                     </li>
                   )
                 })
@@ -47,6 +48,7 @@ const mapState = ({ cart }) => ({ cart });
 
 const mapDispatch = dispatch => ({
   loadCart: () => dispatch(fetchCart()),
+  removeItem: (item) => dispatch(removeFromCart(item)),
 });
 
 export default connect(mapState, mapDispatch)(Cart);

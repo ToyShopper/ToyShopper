@@ -21,7 +21,18 @@ router.post('/', (req, res, next) => {
   }
   cart.total = calculateTotal(cart.items);
   req.session.cart = cart;
-  res.status(201).json(req.session.cart);
+  res.json(req.session.cart);
+});
+
+router.delete('/:id', (req, res, next) => {
+  let cart = req.session.cart || { items: {}, total: 0 };
+  const itemId = req.params.id;
+  if (cart.items[itemId]) {
+    delete cart.items[itemId];
+  }
+  cart.total = calculateTotal(cart.items);
+  req.session.cart = cart;
+  res.json(req.session.cart);
 });
 
 function calculateTotal(items) {
