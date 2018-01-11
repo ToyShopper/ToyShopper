@@ -42,6 +42,10 @@ const User = db.define('user', {
       len: 2
     }
   },
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
   fullName: {
     type: Sequelize.VIRTUAL,
     get() {

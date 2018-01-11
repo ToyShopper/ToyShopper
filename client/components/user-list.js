@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchUsers } from '../store/users';
 
@@ -16,7 +17,9 @@ class UserList extends Component {
           <ul>
             {users.map(user => (
               <li key={user.id}>
-              {user.fullName}
+              <Link to={'/users/' + user.id} >
+                {user.fullName}
+              </Link>
               </li>
             ))}
           </ul>

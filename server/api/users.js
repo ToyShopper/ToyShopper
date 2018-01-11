@@ -12,3 +12,20 @@ router.get('/', (req, res, next) => {
     .then(users => res.json(users))
     .catch(next)
 })
+
+router.get('/:id/', (req, res, next) => {
+  User.findById(req.params.id)
+  .then(user => res.json(user))
+  .catch(next);
+});
+
+router.put('/:id/', function (req, res, next) {
+  console.log(req.body)
+  User.update({
+    isAdmin: true
+  }, {
+    where: {id: req.params.id}
+  }
+  )
+  .then(user => res.json(user));
+});
