@@ -42,9 +42,14 @@ const User = db.define('user', {
       len: 2
     }
   },
+<<<<<<< HEAD
   isAdmin: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
+=======
+  role: {
+    type: Sequelize.ENUM('admin', 'user')
+>>>>>>> master
   },
   fullName: {
     type: Sequelize.VIRTUAL,
