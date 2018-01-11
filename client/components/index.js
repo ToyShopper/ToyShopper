@@ -10,4 +10,6 @@ export {default as Products} from './products'
 export {default as ProductDetail} from './product-detail'
 export {default as Cart} from './cart'
 export {default as UserList} from './user-list'
+export {default as UserDetail} from './user-detail'
+
 export {AllProducts, ProductsByCategory} from './products'
