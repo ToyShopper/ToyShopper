@@ -12,6 +12,7 @@ const getUsers = users => ({
   type: GET_USERS, users
 });
 
+// neccessary?
 const updateUser = updatedUser => ({
   type: UPDATE_USER, updatedUser
 });
@@ -29,8 +30,16 @@ export const putUser = (updatedUser, userId) => dispatch => {
     .then(() => {
       dispatch(fetchUsers());
     })
-    .catch(err => console.log(err))
-;}
+    .catch(err => console.log(err));
+  };
+
+export const deleteUser = (userId) => dispatch => {
+  axios.delete('/api/users/' + userId)
+  .then(() => {
+    dispatch(fetchUsers());
+  })
+  .catch(err => console.log(err));
+};
 
 // REDUCER
 

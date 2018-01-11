@@ -29,3 +29,13 @@ router.put('/:id/', function (req, res, next) {
   .then(() => res.status(204).end())
   .catch(next);
 });
+
+router.delete('/:id/', (req, res, next) => {
+  User.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(() => res.status(204).end())
+  .catch(next);
+});
