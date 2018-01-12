@@ -30,7 +30,7 @@ router.get('/search/:keyword', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  Product.findAll({
+  Product.findOne({
     where: {
       quantity: { $gt: 0 },
       id: req.params.id,
