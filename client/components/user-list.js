@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUsers, putUser, deleteUser } from '../store/users';
+import { Item, Button } from 'semantic-ui-react'
 
 class UserList extends Component {
   componentDidMount() {
@@ -13,15 +14,20 @@ class UserList extends Component {
       <div>
         <h1>All Users</h1>
         {users.length > 0 &&
-          <ul>
+          <Item.Group divided>
             {users.map(user => (
-              <li key={user.id}>
-                {user.fullName}
-                <button name={user.id} onClick={() => this.props.changeUserRole(user)}>{user.role === 'admin' ? 'Demote User' : 'Promote User'}</button>
-                <button name={user.id} onClick={() => this.props.removeUser(user.id)}>Delete User</button>
-              </li>
+              <Item key={user.id}>
+                <Item.Content>
+                <Item.Header as="h3">Name: {user.fullName}</Item.Header>
+                <Item.Description as="h4">Role: {user.role}</Item.Description>
+                </Item.Content>
+              <Item.Content>
+                <Button name={user.id} onClick={() => this.props.changeUserRole(user)}>{user.role === 'admin' ? 'Demote User' : 'Promote User'}</Button>
+                <Button name={user.id} onClick={() => this.props.removeUser(user.id)}>Delete User</Button>
+              </Item.Content>
+              </Item>
             ))}
-          </ul>
+          </Item.Group>
         }
       </div>
     )

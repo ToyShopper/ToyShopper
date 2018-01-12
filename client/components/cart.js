@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchCart, removeFromCart, updateQuantities } from '../store/cart';
+import { Item, Button, Form } from 'semantic-ui-react'
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -48,17 +49,18 @@ class Cart extends Component {
 
   renderItem(item) {
     return (
-      <li key={item.id}>
-        <br />
-        <p>{item.title}</p>
-        <p>Price: ${item.price}</p>
-        Quantity:
-        <input
+      <Item key={item.id}>
+        <Item.Content>
+        <Item.Header>{item.title}</Item.Header>
+        <Item.Description as="h4">Price: ${item.price}</Item.Description>
+        <Form.Input
           id={'quantity_' + item.id}
+          label="Quantity"
           value={this.state[item.id].quantity}
           onChange={this.handleChange(item.id)} />
-        <button onClick={() => this.handleDelete(item)}>Remove</button>
-      </li>
+        <Button onClick={() => this.handleDelete(item)}>Remove</Button>
+        </Item.Content>
+      </Item>
     )
   }
 
@@ -70,17 +72,17 @@ class Cart extends Component {
         {Object.keys(cart.items).length === 0 &&
           (<p>Your shopping cart is empty.</p>)}
         {Object.keys(this.state).length > 0  &&
-          (<form onSubmit={this.handleSubmit}>
-            <ul>
+          (<Form onSubmit={this.handleSubmit}>
+          <Item.Group divided>
               {
                 Object.keys(cart.items).map(itemId => this.renderItem(cart.items[itemId]))
               }
-            </ul>
-              <button type="submit">Update</button>
-            </form>
+              <Form.Button>Update Quantities</Form.Button>
+              </Item.Group>
+            </Form>
           )
         }
-        <p>Total: ${cart.total}</p>
+        <h3>Total: ${cart.total}</h3>
       </div>
     );
   }
