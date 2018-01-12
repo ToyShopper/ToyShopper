@@ -15,16 +15,13 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/category/:category', (req, res, next) => {
-  ProductCategory.findOne({ where: { name: req.params.category } })
-    .then(category => {
-      return category.id;
-    })
-    .then(id => {
-      Product.findAll({ where: { CategoryId: id } }).then(product =>
-        res.json(product),
-      );
-    });
+router.get('/search/:keyword', (req, res, next) => {
+  Product.findAll({
+    where: { title: { $like: '%' + req.params.keyword + '%' } },
+  })
+    .then(products => {
+      res.json(products)})
+    .catch(next);
 });
 
 router.get('/:id', (req, res, next) => {
