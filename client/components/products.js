@@ -6,6 +6,7 @@ import {
   fetchProductsByCategory,
   fetchProductsBySearch,
 } from '../store/products';
+import {Item, Label } from 'semantic-ui-react'
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -24,16 +25,20 @@ class Products extends Component {
           <h1>All Products</h1>
         )}
         {products.length > 0 && (
-          <ul>
+          <Item.Group divided>
             {products.map(product => (
-              <li key={product.id}>
-                <img src={product.imageURL} />
-                <br />
-                <Link to={'/products/' + product.id}>{product.title}</Link>
-                <p>Price: ${product.price}</p>
-              </li>
+              <Item key={product.id}>
+                <Item.Image src={product.imageURL} />
+                <Item.Content>
+                  <Item.Header as={Link} to={'/products/' + product.id}>{product.title}</Item.Header>
+                  <Item.Description>Price: ${product.price}</Item.Description>
+                  <Item.Extra>
+                    <Label>{'Category: ' + product.CategoryId}</Label>
+                  </Item.Extra>
+                </Item.Content>
+              </Item>
             ))}
-          </ul>
+          </Item.Group>
         )}
       </div>
     );
