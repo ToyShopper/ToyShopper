@@ -9,7 +9,6 @@ module.exports = router;
 router.get('/', (req, res, next) => {
   Product.findAll({
     // explicitly select only the columns needed
-    where: { quantity: { $gt: 0 } },
     attributes: ['id', 'title', 'price', 'imageURL'],
   })
     .then(products => res.json(products))
@@ -18,10 +17,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/search/:keyword', (req, res, next) => {
   Product.findAll({
-    where: {
-      quantity: { $gt: 0 },
-      title: { $like: '%' + req.params.keyword + '%' },
-    },
+    where: { title: { $like: '%' + req.params.keyword + '%' } },
   })
     .then(products => {
       res.json(products);
@@ -30,12 +26,7 @@ router.get('/search/:keyword', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  Product.findAll({
-    where: {
-      quantity: { $gt: 0 },
-      id: req.params.id,
-    },
-  })
+  Product.findById(req.params.id)
     .then(product => res.json(product))
     .catch(next);
 });
