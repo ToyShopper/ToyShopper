@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchUsers } from '../store/users';
+import { fetchUsers, putUser, deleteUser } from '../store/users';
 
 class UserList extends Component {
   componentDidMount() {
@@ -16,7 +16,9 @@ class UserList extends Component {
           <ul>
             {users.map(user => (
               <li key={user.id}>
-              {user.fullName}
+                {user.fullName}
+                <button name={user.id} onClick={() => this.props.changeUserRole(user)}>{user.role === 'admin' ? 'Demote User' : 'Promote User'}</button>
+                <button name={user.id} onClick={() => this.props.removeUser(user.id)}>Delete User</button>
               </li>
             ))}
           </ul>
@@ -29,7 +31,16 @@ class UserList extends Component {
 const mapState = ({ users }) => ({ users });
 
 const mapDispatch = dispatch => ({
-  loadUsers: () => dispatch(fetchUsers())
+  loadUsers: () => dispatch(fetchUsers()),
+  changeUserRole: (user) => {
+    let role = ''
+    user.role === 'admin' ? role = 'user' : role = 'admin';
+    const updateUser = {role};
+    return dispatch(putUser(updateUser, user.id))
+  },
+  removeUser: (userId) => {
+    return dispatch(deleteUser(userId));
+  }
 });
 
 export default connect(mapState, mapDispatch)(UserList)

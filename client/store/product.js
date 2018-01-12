@@ -17,8 +17,10 @@ const getProductDetail = product => ({ type: GET_PRODUCT_DETAIL, product })
 export const fetchProductDetail = (productId) =>
   dispatch =>
     axios.get('/api/products/' + productId)
-      .then(res =>
-        dispatch(getProductDetail(res.data)))
+      .then(res =>{
+        return dispatch(getProductDetail(res.data))
+
+      })
       .catch(err => console.log(err))
 
 /**
