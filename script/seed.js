@@ -10,7 +10,7 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db')
-const {User, Product, ProductCategory, Review} = require('../server/db/models')
+const {User, Product, ProductCategory, Review, Order, OrderItem} = require('../server/db/models')
 
 async function seed () {
   await db.sync({force: true})
@@ -50,12 +50,6 @@ async function seed () {
     Product.create({title: 'Babystarters Sock Monkey Sweater Knit Plush Toy', price: 21.00, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51ckaVeINkL._AC_US240_FMwebp_QL65_.jpg', quantity: 5, description: 'a cool toy'})
     .then(product => product.setCategory(2))
   ])
-  //  .then (products => {
-  //   products.forEach(product => {
-  //     console.log(product)
-  //     product.setCategory(1);
-  //   });
-  // })
   .catch(err => {
     console.error(err.message)
     console.error(err.stack)
@@ -92,12 +86,126 @@ async function seed () {
       review.setProduct(3);
     })
   ]);
+
+  const orders = await Promise.all([
+    Order.create({
+      total: 15,
+      orderedAt: Date.now(),
+      status: 'BEING PREPARED'
+    })
+    .then(order => {
+      order.setUser(1);
+    }),
+    Order.create({
+      total: 100.25,
+      orderedAt: Date.now(),
+      status: 'SHIPPED'
+    })
+    .then(order => {
+      order.setUser(1);
+    }),
+    Order.create({
+      total: 1337.88,
+      orderedAt: Date.now(),
+      status: 'EN ROUTE'
+    })
+    .then(order => {
+      order.setUser(2);
+    })
+  ]);
+
+  const orderItems = await Promise.all([
+    OrderItem.create({
+      quantity: 1,
+      priceAtOrder: 12
+    })
+    .then(orderItem => {
+      orderItem.setProduct(1);
+      orderItem.setOrder(1);
+    }),
+    OrderItem.create({
+      quantity: 1,
+      priceAtOrder: 20
+    })
+    .then(orderItem => {
+      orderItem.setProduct(2);
+      orderItem.setOrder(1);
+    }),
+    OrderItem.create({
+      quantity: 2,
+      priceAtOrder: 5.64
+    })
+    .then(orderItem => {
+      orderItem.setProduct(3);
+      orderItem.setOrder(1);
+    }),
+    OrderItem.create({
+      quantity: 17,
+      priceAtOrder: 35.5
+    })
+    .then(orderItem => {
+      orderItem.setProduct(4);
+      orderItem.setOrder(1);
+    }),
+    OrderItem.create({
+      quantity: 1,
+      priceAtOrder: 99999.33
+    })
+    .then(orderItem => {
+      orderItem.setProduct(5);
+      orderItem.setOrder(2);
+    }),
+    OrderItem.create({
+      quantity: 6,
+      priceAtOrder: 123.56
+    })
+    .then(orderItem => {
+      orderItem.setProduct(1);
+      orderItem.setOrder(2);
+    }),
+    OrderItem.create({
+      quantity: 21,
+      priceAtOrder: 5.87
+    })
+    .then(orderItem => {
+      orderItem.setProduct(2);
+      orderItem.setOrder(2);
+    }),
+    OrderItem.create({
+      quantity: 6,
+      priceAtOrder: 123.56
+    })
+    .then(orderItem => {
+      orderItem.setProduct(3);
+      orderItem.setOrder(3);
+    }),
+    OrderItem.create({
+      quantity: 6,
+      priceAtOrder: 123.56
+    })
+    .then(orderItem => {
+      orderItem.setProduct(4);
+      orderItem.setOrder(3);
+    }),
+    OrderItem.create({
+      quantity: 6,
+      priceAtOrder: 123.56
+    })
+    .then(orderItem => {
+      orderItem.setProduct(5);
+      orderItem.setOrder(3);
+    })
+  ]);
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // and store the result that the promise resolves to in a variable! This is nice!
   console.log(`seeded ${users.length} users`)
   console.log(`seeded ${products.length} products`)
   console.log(`seeded ${categories.length} categories`)
   console.log(`seeded ${reviews.length} reviews`)
+  console.log(`seeded ${orders.length} orders`)
+  console.log(`seeded ${orderItems.length} order items`)
+
+
 
 
   console.log(`seeded successfully`)

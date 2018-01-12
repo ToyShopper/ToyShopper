@@ -22,6 +22,7 @@ const Review = require('./review');
 
 Order.belongsTo(User);
 Order.hasMany(OrderItem);
+OrderItem.belongsTo(Order);
 OrderItem.belongsTo(Product);
 Product.belongsTo(ProductCategory, {as: 'Category'});
 Review.belongsTo(Product);
