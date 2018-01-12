@@ -15,7 +15,7 @@ const Main = (props) => {
 
   return (
     <div>
-      <h1>BOILERMAKER</h1>
+      <h1>Toy Shopper</h1>
       <nav>
         <div>
           <Link to="/home">Home</Link>

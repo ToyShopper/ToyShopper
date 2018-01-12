@@ -1,5 +1,4 @@
 import axios from 'axios'
-import history from '../history'
 
 /**
  * ACTION TYPES
@@ -7,6 +6,7 @@ import history from '../history'
 const GET_CART = 'GET_CART';
 const ADD_ITEM_TO_CART = 'ADD_ITEM_TO_CART';
 const REMOVE_ITEM_FROM_CART = 'REMOVE_ITEM_FROM_CART';
+const UPDATE_CART_ITEM_QUANTITIES = 'UPDATE_CART_ITEM_QUANTITIES';
 
 /**
  * ACTION CREATORS
@@ -14,6 +14,8 @@ const REMOVE_ITEM_FROM_CART = 'REMOVE_ITEM_FROM_CART';
 const getCart = cart => ({ type: GET_CART, cart })
 const addItemToCart = (cart) => ({ type: ADD_ITEM_TO_CART, cart });
 const removeItemFromCart = (cart) => ({type: REMOVE_ITEM_FROM_CART, cart});
+const updateCartItemQuantities = (cart) => ({type: UPDATE_CART_ITEM_QUANTITIES, cart});
+
 /**
  * THUNK CREATORS
  */
@@ -36,16 +38,21 @@ export const removeFromCart = (item) => dispatch => {
   .catch(err => console.log(err));
 }
 
+export const updateQuantities = (items) => dispatch => {
+  axios.put('/api/cart/', items)
+  .then(res => dispatch(updateCartItemQuantities(res.data)))
+  .catch(err => console.log(err));
+}
+
 /**
  * REDUCER
  */
 export default function (state = {items: {}, total: 0}, action) {
   switch (action.type) {
     case GET_CART:
-      return action.cart;
     case ADD_ITEM_TO_CART:
-      return action.cart;
     case REMOVE_ITEM_FROM_CART:
+    case UPDATE_CART_ITEM_QUANTITIES:
       return action.cart;
     default:
       return state
