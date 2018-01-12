@@ -8,9 +8,12 @@ router.get('/:category', (req, res, next) => {
       return category.id;
     })
     .then(id => {
-      Product.findAll({ where: { CategoryId: id } }).then(products =>
-        res.json(products),
-      );
+      Product.findAll({
+        where: {
+          quantity: { $gt: 0 },
+          CategoryId: id,
+        },
+      }).then(products => res.json(products));
     });
 });
 
