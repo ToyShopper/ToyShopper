@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchOrder } from '../store/order';
-import { Card, Divider, List } from 'semantic-ui-react';
+import { Card, Divider, List, Image } from 'semantic-ui-react';
 
 class Order extends Component {
   componentDidMount() {
@@ -28,9 +28,10 @@ class Order extends Component {
             <Card.Header>Order Items</Card.Header>
             <List>
               {order.order_items.map(item => (
-                <List.Item key={item.id}>
+                <List.Item key={item.id} >
                   <Divider/>
                   <List.Content>
+                    <Image src={item.product.imageURL} size="small"/>
                     <List.Header>{item.product.title}</List.Header>
                     <List.Description>{'Quantity: ' + item.product.quantity}</List.Description>
                   </List.Content>
