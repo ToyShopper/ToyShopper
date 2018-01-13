@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchCart, removeFromCart, updateQuantities } from '../store/cart';
-import { Item, Button, Form } from 'semantic-ui-react'
+import { Item, Button, Form, Icon } from 'semantic-ui-react'
+
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -27,9 +29,8 @@ class Cart extends Component {
   handleChange(itemId) {
     return event => {
       this.setState({
-        [itemId]: Object.assign({}, this.state[itemId], {quantity: Number(event.target.value)}),
+        [itemId]: Object.assign({}, this.state[itemId], { quantity: Number(event.target.value) }),
       });
-      console.log('HANDLE CHANGE:', this.state);
     };
   }
 
@@ -39,11 +40,10 @@ class Cart extends Component {
   }
 
   handleDelete(item) {
-    const {removeItem} = this.props;
+    const { removeItem } = this.props;
     let items = Object.assign({}, this.state);
     delete items[item.id];
-    console.log('HANDLE DELETE (items)', items)
-    this.setState(items, () => console.log('HANDLE DELETE (state)', this.state));
+    this.setState(items);
     removeItem(item);
   }
 
@@ -51,14 +51,17 @@ class Cart extends Component {
     return (
       <Item key={item.id}>
         <Item.Content>
-        <Item.Header>{item.title}</Item.Header>
-        <Item.Description as="h4">Price: ${item.price}</Item.Description>
-        <Form.Input
-          id={'quantity_' + item.id}
-          label="Quantity"
-          value={this.state[item.id].quantity}
-          onChange={this.handleChange(item.id)} />
-        <Button onClick={() => this.handleDelete(item)}>Remove</Button>
+          <Item.Header>{item.title}</Item.Header>
+          <Item.Description as="h4">Price: ${item.price}</Item.Description>
+            <Form.Input
+              id={'quantity_' + item.id}
+              label="Quantity"
+              labelPosition="right"
+              value={this.state[item.id].quantity}
+              onChange={this.handleChange(item.id)} />
+            <Button onClick={() => this.handleDelete(item)} icon labelPosition="left">
+              <Icon name="ban" />Remove Item
+            </Button>
         </Item.Content>
       </Item>
     )
@@ -71,18 +74,19 @@ class Cart extends Component {
         <h1>Shopping Cart</h1>
         {Object.keys(cart.items).length === 0 &&
           (<p>Your shopping cart is empty.</p>)}
-        {Object.keys(this.state).length > 0  &&
+        {Object.keys(this.state).length > 0 &&
           (<Form onSubmit={this.handleSubmit}>
-          <Item.Group divided>
+            <Item.Group divided>
               {
                 Object.keys(cart.items).map(itemId => this.renderItem(cart.items[itemId]))
               }
               <Form.Button>Update Quantities</Form.Button>
-              </Item.Group>
-            </Form>
+            </Item.Group>
+          </Form>
           )
         }
         <h3>Total: ${cart.total}</h3>
+        <Button as={Link} to="/checkout" disabled={!Object.keys(cart.items).length}>Checkout</Button>
       </div>
     );
   }

@@ -50,8 +50,7 @@ class ProductDetail extends Component {
         <Item.Meta as="h4">Item Description</Item.Meta>
         <Item.Description as="p">{product.description}</Item.Description>
         <Form onSubmit={(event) => this.handleSubmit(event, product)}>
-          <Form.Input id="quantity" label="Quantity" value={this.state.quantity} onChange={this.handleChange('quantity')} />
-          <Form.Button>Add to Cart</Form.Button>
+          <Form.Input id="quantity" label="Quantity" value={this.state.quantity} onChange={this.handleChange('quantity')} action={{labelPosition: 'left', icon: 'add to cart', content: 'Add to Cart' }} />
         </Form>
       </Item>
     ) : (<div />);
