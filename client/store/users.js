@@ -21,7 +21,7 @@ const updateUser = updatedUser => ({
 
 export const fetchUsers = () =>  dispatch => {
     axios.get('/api/users/')
-    .then(res => dispatch(getUsers(res.data)) )
+    .then(res => dispatch(getUsers(res.data)))
     .catch(err => console.log(err));
 };
 

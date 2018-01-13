@@ -23,6 +23,8 @@ const Main = (props) => {
           <Menu.Item as={Link} to="/products">Products</Menu.Item>
           <Menu.Item as={Link} to="/cart">Cart</Menu.Item>
           <Menu.Item as={Link} to="/users">Users</Menu.Item>
+          <Menu.Item as={Link} to="/orders">Orders</Menu.Item>
+
           {
             isLoggedIn
               ? <div className="right menu">
