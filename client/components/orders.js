@@ -15,15 +15,33 @@ class Orders extends Component {
     const { orders } = this.props;
     return (
       <div>
-        <Card />
         {orders.length > 0 &&
-          <ul>
-            {orders.map(order => (
-              <li key={order.id}>
-              {order.id}</li>
-            ))}
-          </ul>}
+          <Card.Group>
+          {orders.map(order=> (
+            <Card key={order.id}>
+              <Card.Content>
+                <Card.Header>{'Order #: ' + order.id}</Card.Header>
+                <Card.Meta>{'Ordered on ' + order.orderedAt}</Card.Meta>
+                <Card.Description>{'Status: ' + order.status}</Card.Description>
+                <Card.Description>{'Total: ' + order.total}</Card.Description>
+              </Card.Content>
+              <Card.Content>
+                <Card.Header>User</Card.Header>
+                <Card.Meta>{'ID #: ' + order.user.id}</Card.Meta>
+                <Card.Description>{order.user.fullName}</Card.Description>
+              </Card.Content>
+            </Card>
+          ))}
+          </Card.Group>
+        }
       </div>
+          // <ul>
+          //   {orders.map(order => (
+          //     <li key={order.id}>
+          //     {order.id}</li>
+          //   ))}
+          // </ul>}
+
     )
   }
 }

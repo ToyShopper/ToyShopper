@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Route, Switch, Router} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import {Main, Login, Signup, UserHome, AllProducts, ProductDetail, Cart, UserList, UserDetail, ProductsByCategory, Orders} from './components'
+import {Main, Login, Signup, UserHome, AllProducts, ProductDetail, Cart, UserList, UserDetail, ProductsByCategory, Orders, ProductsBySearch} from './components'
 import {me} from './store'
 
 /**
