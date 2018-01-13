@@ -36,6 +36,7 @@ class Orders extends Component {
     return (
       <div>
         {orders.length > 0 &&
+
           <Item.Group divided>
             {orders.map(order => this.renderOrder(order))}
           </Item.Group>
