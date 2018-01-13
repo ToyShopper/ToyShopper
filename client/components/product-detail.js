@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchProductDetail } from '../store/product';
-import {addToCart} from '../store/cart';
-import { Item, Form } from 'semantic-ui-react'
+import { addToCart } from '../store/cart';
+import { fetchReviewsForProduct } from '../store/reviews';
+import { Item, Comment, Form, Header, Rating } from 'semantic-ui-react'
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -19,6 +20,7 @@ class ProductDetail extends Component {
 
   componentDidMount() {
     this.props.loadProductDetail();
+    this.props.loadReviews();
   }
 
   handleChange(name) {
@@ -26,7 +28,8 @@ class ProductDetail extends Component {
       this.setState({
         [name]: event.target.value,
       }
-    )};
+      )
+    };
   }
 
   handleSubmit(event, product) {
@@ -40,35 +43,62 @@ class ProductDetail extends Component {
     this.props.addItemToCart(item);
   }
 
+  renderReview(review) {
+    return (
+      <Comment key={review.id}>
+        <Comment.Avatar src='https://www.vccircle.com/wp-content/uploads/2017/03/default-profile.png?w=300' />
+        <Comment.Content>
+          <Comment.Author>{review.user.fullName}</Comment.Author>
+          <Rating maxRating={5} defaultRating={Math.ceil(Math.random()*6)} icon='star' disabled />
+          <Comment.Metadata>
+            Written on {new Date(review.createdAt).toTimeString()}
+          </Comment.Metadata>
+          <Comment.Text>{review.text}</Comment.Text>
+        </Comment.Content>
+      </Comment>
+    )
+  }
+
   render() {
-    const { product } = this.props;
-    return product.id ? (
-      <Item>
-        <Item.Header as="h1">{product.title}</Item.Header>
-        <Item.Image size="large" src={product.imageURL} />
-        <Item.Extra as="h4">Price: ${product.price}</Item.Extra>
-        <Item.Meta as="h4">Item Description</Item.Meta>
-        <Item.Description as="p">{product.description}</Item.Description>
-        <Form onSubmit={(event) => this.handleSubmit(event, product)}>
-          <Form.Input id="quantity" label="Quantity" value={this.state.quantity} onChange={this.handleChange('quantity')} action={{labelPosition: 'left', icon: 'add to cart', content: 'Add to Cart' }} />
-        </Form>
-      </Item>
-    ) : (<div />);
+    const { product, reviews } = this.props;
+    return (
+      <div>
+        {product.id && (
+          <Item>
+            <Header as="h1" dividing>{product.title}</Header>
+            <Item.Content>
+            <Item.Image size="large" src={product.imageURL} />
+            <Item.Extra as="h4">Price: ${product.price}</Item.Extra>
+            <Item.Meta as="h4">Item Description</Item.Meta>
+            <Item.Description as="p">{product.description}</Item.Description>
+            <Form onSubmit={(event) => this.handleSubmit(event, product)}>
+              <Form.Input id="quantity" label="Quantity" value={this.state.quantity} onChange={this.handleChange('quantity')} action={{ labelPosition: 'left', icon: 'add to cart', content: 'Add to Cart' }} />
+            </Form>
+            </Item.Content>
+          </Item>
+        )}
+        {reviews && (<Comment.Group>
+          <Header as="h2" dividing>Reviews for this product</Header>
+          {reviews.map(review => this.renderReview(review))}
+        </Comment.Group>)}
+      </div>)
   }
 }
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapState = ({ product }) => ({ product });
+const mapState = ({ product, reviews }) => ({ product, reviews });
 
 const mapDispatch = (dispatch, ownProps) => ({
   loadProductDetail: () => {
-    const productId = ownProps.match.params.id;
-    return dispatch(fetchProductDetail(productId));
+    return dispatch(fetchProductDetail(ownProps.match.params.id));
+  },
+  loadReviews: () => {
+    return dispatch(fetchReviewsForProduct(ownProps.match.params.id));
   },
   addItemToCart: (item) => {
     return dispatch(addToCart(item));
-  }
+  },
 });
 
 export default connect(mapState, mapDispatch)(ProductDetail);
