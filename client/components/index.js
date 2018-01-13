@@ -12,6 +12,7 @@ export {default as Cart} from './cart'
 export {default as UserList} from './user-list'
 export {AllProducts, ProductsByCategory, ProductsBySearch} from './products'
 export {default as UserDetail} from './user-detail'
+export {default as Checkout} from './checkout'
 export {default as Orders} from './orders'
 export {default as Order} from './order'
 

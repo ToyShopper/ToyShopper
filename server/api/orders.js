@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const db = require('../db');
 const { Order } = require('../db/models');
 const { OrderItem } = require('../db/models');
 const { User } = require('../db/models');
@@ -28,6 +29,20 @@ router.get('/:id', (req, res, next) => {
     ]
   })
   .then(order => res.json(order))
+  .catch(next);
+});
+
+router.post('/', (req, res, next) => {
+  // 1. get the current user. create a user with the given email address if not exists (for now, we will skip this part)
+  // 2. create a new order with given user id (for now, we will leave user id blank)
+  // 3. create order items using the order id above and given product ids
+  // 4. empty the shopping cart
+  const newOrder = req.body;
+  Order.create(newOrder, {include: [OrderItem]})
+  .then(order => {
+    req.session.cart = {items: {}, total: 0};
+    res.json(order)
+  })
   .catch(next);
 });
 
