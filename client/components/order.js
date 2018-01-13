@@ -20,10 +20,17 @@ class Order extends Component {
             <Card.Description>{'Total: ' + order.total}</Card.Description>
           </Card.Content>
           <Card.Content>
-            <Card.Header>User</Card.Header>
-            <Card.Meta>{'ID #: ' + order.user.id}</Card.Meta>
-            <Card.Description>{order.user.fullName}</Card.Description>
-          </Card.Content>
+          <Card.Header>User</Card.Header>
+          {order.user ? (
+            <div>
+              <Card.Meta>{'ID #: ' + order.user.id}</Card.Meta>
+              <Card.Description>{order.user.fullName}</Card.Description>
+            </div>
+          ) : (
+            <Card.Description>Guest Order</Card.Description>
+          )}
+
+        </Card.Content>
           <Card.Content>
             <Card.Header>Order Items</Card.Header>
             <List>

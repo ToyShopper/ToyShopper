@@ -9,7 +9,12 @@ const { Product } = require('../db/models');
 module.exports = router;
 
 router.get('/', (req, res, next) => {
+  let whereStatement = {};
+  if (req.query.status){
+    whereStatement.status = req.query.status;
+  }
   Order.findAll({
+    where: whereStatement,
     attributes: ['id', 'total', 'orderedAt', 'status'],
     include: [{model: OrderItem, attributes: ['id', 'quantity', 'priceAtOrder', 'productId']}, {model: User, attributes: ['id', 'email', 'firstName', 'lastName']}]
   })
