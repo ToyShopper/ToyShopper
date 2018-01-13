@@ -1,52 +1,46 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchOrder } from '../store/order';
-import { Card, Divider, List, Image } from 'semantic-ui-react';
+import { Card, Item } from 'semantic-ui-react';
 
 class Order extends Component {
   componentDidMount() {
     this.props.loadOrder();
   }
+
+  renderOrderItem(item) {
+    return (
+      <Item key={item.id}>
+        <Item.Content>
+          <Item.Image src={item.product.imageURL} size="tiny" />
+          <Item.Header>{item.product.title}</Item.Header>
+          <Item.Description>Quantity: {item.quantity}</Item.Description>
+          <Item.Description>Price: ${Number(item.priceAtOrder).toFixed(2)}</Item.Description>
+        </Item.Content>
+      </Item>
+    );
+  }
+
   render() {
     const { order } = this.props;
     return (
       <div>
         {order.id &&
-        <Card>
-          <Card.Content>
-            <Card.Header>{'Order #: ' + order.id}</Card.Header>
-            <Card.Meta>{'Ordered on ' + order.orderedAt}</Card.Meta>
-            <Card.Description>{'Status: ' + order.status}</Card.Description>
-            <Card.Description>{'Total: ' + order.total}</Card.Description>
-          </Card.Content>
-          <Card.Content>
-          <Card.Header>User</Card.Header>
-          {order.user ? (
+          (
             <div>
-              <Card.Meta>{'ID #: ' + order.user.id}</Card.Meta>
-              <Card.Description>{order.user.fullName}</Card.Description>
+              <Card fluid>
+                <Card.Header as="h1">Order #{order.id}</Card.Header>
+                <Card.Meta>Ordered on {new Date(order.orderedAt).toTimeString()}</Card.Meta>
+                <Card.Description>Status:  {order.status}</Card.Description>
+                <Card.Description>Total: $ {Number(order.total).toFixed(2)}</Card.Description>
+              </Card>
+              <Item.Group divided>
+                <Item.Header as="h2">Order Items</Item.Header>
+                {order.order_items.map(item => this.renderOrderItem(item))}
+              </Item.Group>
             </div>
-          ) : (
-            <Card.Description>Guest Order</Card.Description>
-          )}
-
-        </Card.Content>
-          <Card.Content>
-            <Card.Header>Order Items</Card.Header>
-            <List>
-              {order.order_items.map(item => (
-                <List.Item key={item.id} >
-                  <Divider/>
-                  <List.Content>
-                    <Image src={item.product.imageURL} size="small"/>
-                    <List.Header>{item.product.title}</List.Header>
-                    <List.Description>{'Quantity: ' + item.product.quantity}</List.Description>
-                  </List.Content>
-                </List.Item>
-              ))}
-            </List>
-          </Card.Content>
-        </Card>}
+          )
+        }
       </div>
     );
   }
