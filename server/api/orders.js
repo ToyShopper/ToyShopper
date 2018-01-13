@@ -2,6 +2,8 @@ const router = require('express').Router();
 const { Order } = require('../db/models');
 const { OrderItem } = require('../db/models');
 const { User } = require('../db/models');
+const { Product } = require('../db/models');
+
 
 module.exports = router;
 
@@ -20,7 +22,10 @@ router.get('/:id', (req, res, next) => {
       id: req.params.id
     },
     attributes: ['id', 'total', 'orderedAt', 'status'],
-    include: [{model: OrderItem, attributes: ['id', 'quantity', 'priceAtOrder', 'productId']}, {model: User, attributes: ['id', 'email', 'firstName', 'lastName']}]
+    include: [
+      {model: OrderItem, attributes: ['id', 'quantity', 'priceAtOrder', 'productId'], include: [Product]},
+      {model: User, attributes: ['id', 'email', 'firstName', 'lastName']}
+    ]
   })
   .then(order => res.json(order))
   .catch(next);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchOrders } from '../store/orders';
 import { Card } from 'semantic-ui-react';
@@ -17,8 +18,8 @@ class Orders extends Component {
       <div>
         {orders.length > 0 &&
           <Card.Group>
-          {orders.map(order=> (
-            <Card key={order.id}>
+          {orders.map(order => (
+            <Card key={order.id} as={Link} to={'/orders/' + order.id}>
               <Card.Content>
                 <Card.Header>{'Order #: ' + order.id}</Card.Header>
                 <Card.Meta>{'Ordered on ' + order.orderedAt}</Card.Meta>
