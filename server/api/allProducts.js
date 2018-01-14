@@ -18,9 +18,7 @@ router.get('/search/:keyword', (req, res, next) => {
   Product.findAll({
     where: { title: { $like: '%' + req.params.keyword + '%' } },
   })
-    .then(products => {
-      res.json(products);
-    })
+    .then(products => res.json(products))
     .catch(next);
 });
 

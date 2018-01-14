@@ -22,9 +22,7 @@ router.get('/search/:keyword', (req, res, next) => {
       title: { $like: '%' + req.params.keyword + '%' },
     },
   })
-    .then(products => {
-      res.json(products);
-    })
+    .then(products => res.json(products))
     .catch(next);
 });
 
@@ -66,8 +64,6 @@ router.get('/:id/reviews', (req, res, next) => {
       },
     ],
   })
-    .then(reviews => {
-      res.json(reviews);
-    })
+    .then(reviews => res.json(reviews))
     .catch(next);
 });

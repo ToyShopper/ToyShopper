@@ -6,9 +6,9 @@ router.get('/:category', (req, res, next) => {
   Category.findOne({
     where: { name: req.params.category },
     include: [{ model: Product }],
-  }).then(products => {
-    res.json(products);
-  }).catch(next);
+  })
+  .then(products => res.json(products))
+  .catch(next);
 });
 
 module.exports = router;
