@@ -2,14 +2,13 @@ const router = require('express').Router();
 const { Product } = require('../db/models');
 const { Review } = require('../db/models');
 const { User } = require('../db/models');
-const { ProductCategory } = require('../db/models');
 
 module.exports = router;
 
 router.get('/', (req, res, next) => {
   Product.findAll({
     // explicitly select only the columns needed
-    attributes: ['id', 'title', 'price', 'imageURL'],
+    attributes: ['id', 'title', 'price', 'primaryImageURL'],
   })
     .then(products => res.json(products))
     .catch(next);

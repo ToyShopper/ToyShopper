@@ -10,7 +10,7 @@ router.get('/', (req, res, next) => {
   Product.findAll({
     // explicitly select only the columns needed
     where: { quantity: { $gt: 0 } },
-    attributes: ['id', 'title', 'price', 'imageURL'],
+    attributes: ['id', 'title', 'price', 'primaryImageURL'],
   })
     .then(products => res.json(products))
     .catch(next);

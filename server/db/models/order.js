@@ -9,7 +9,13 @@ const Order = db.define('order', {
     type: Sequelize.DATE
   },
   status: {
-    type: Sequelize.ENUM('SHIPPED', 'EN ROUTE', 'BEING PREPARED')
+    type: Sequelize.ENUM('CREATED', 'PROCESSING', 'CANCELLED', 'COMPLETED')
+  },
+  email: {
+    type: Sequelize.STRING,
+    validate : {
+      isEmail: true,
+    }
   }
 });
 

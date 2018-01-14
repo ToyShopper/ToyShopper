@@ -10,7 +10,7 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db')
-const {User, Product, ProductCategory, Review, Order, OrderItem} = require('../server/db/models')
+const {User, Product, Category, Review, Order, OrderItem} = require('../server/db/models')
 
 async function seed () {
   await db.sync({force: true})
@@ -24,31 +24,31 @@ async function seed () {
   ]);
 
   const categories = await Promise.all([
-    ProductCategory.create({
+    Category.create({
       name: 'Baby'
     }),
-    ProductCategory.create({
+    Category.create({
       name: 'Apparel'
     }),
-    ProductCategory.create({
+    Category.create({
       name: 'Nursery'
     })
   ]);
 
 
   const products = await Promise.all([
-    Product.create({title: 'Baby Starters Plush Snuggle Buddy , Sugar N Spice Doll', price: 12.60, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/41InACBfmhL._AC_US240_FMwebp_QL65_.jpg', quantity: 3, description: 'a cool toy'})
-    .then(product => product.setCategory(1)),
-    Product.create({title: 'Sock Monkey Hooded Towel and 2 Washcloth Set by Baby', price: 17.62, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51hXthat5oL._AC_US240_FMwebp_QL65_.jpg', quantity: 4, description: 'a cool toy'})
-    .then(product => product.setCategory(2)),
-    Product.create({title: 'Rashti & Rashti My First Year Picture Frame, Silver', price: 18.99, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/512kUUmpbWL._AC_US240_FMwebp_QL65_.jpg', quantity: 0, description: 'a cool toy'})
-    .then(product => product.setCategory(3))
+    Product.create({title: 'Baby Starters Plush Snuggle Buddy , Sugar N Spice Doll', price: 12.60, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/41InACBfmhL._AC_US240_FMwebp_QL65_.jpg', quantity: 3, description: 'a cool toy'})
+    .then(product => product.addCategories([1])),
+    Product.create({title: 'Sock Monkey Hooded Towel and 2 Washcloth Set by Baby', price: 17.62, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/51hXthat5oL._AC_US240_FMwebp_QL65_.jpg', quantity: 4, description: 'a cool toy'})
+    .then(product => product.addCategories([1, 2])),
+    Product.create({title: 'Rashti & Rashti My First Year Picture Frame, Silver', price: 18.99, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/512kUUmpbWL._AC_US240_FMwebp_QL65_.jpg', quantity: 0, description: 'a cool toy'})
+    .then(product => product.addCategories([3]))
     ,
-    Product.create({title: 'Baby Starters Sock Monkey Blanket', price: 17.99, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51+8BLb2OSL._AC_US240_FMwebp_QL65_.jpg', quantity: 10, description: 'a cool toy'})
-    .then(product => product.setCategory(1))
+    Product.create({title: 'Baby Starters Sock Monkey Blanket', price: 17.99, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/51+8BLb2OSL._AC_US240_FMwebp_QL65_.jpg', quantity: 10, description: 'a cool toy'})
+    .then(product => product.addCategories([1, 3]))
     ,
-    Product.create({title: 'Babystarters Sock Monkey Sweater Knit Plush Toy', price: 21.00, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51ckaVeINkL._AC_US240_FMwebp_QL65_.jpg', quantity: 5, description: 'a cool toy'})
-    .then(product => product.setCategory(2))
+    Product.create({title: 'Babystarters Sock Monkey Sweater Knit Plush Toy', price: 21.00, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/51ckaVeINkL._AC_US240_FMwebp_QL65_.jpg', quantity: 5, description: 'a cool toy'})
+    .then(product => product.addCategories([1, 2]))
   ])
   .catch(err => {
     console.error(err.message)
@@ -58,28 +58,32 @@ async function seed () {
 
   const reviews = await Promise.all([
     Review.create({
-      text: 'this product is pretty cool'
+      text: 'this product is pretty cool',
+      rating: 5
     })
     .then(review => {
       review.setUser(1);
       review.setProduct(1);
     }),
     Review.create({
-      text: 'this product is not cool'
+      text: 'this product is not cool',
+      rating: 2
     })
     .then(review => {
       review.setUser(2);
       review.setProduct(1);
     }),
     Review.create({
-      text: 'this product is just ok'
+      text: 'this product is just ok',
+      rating: 3
     })
     .then(review => {
       review.setUser(1);
       review.setProduct(2);
     }),
     Review.create({
-      text: 'this product stinks'
+      text: 'this product stinks',
+      rating: 0
     })
     .then(review => {
       review.setUser(2);
@@ -91,7 +95,7 @@ async function seed () {
     Order.create({
       total: 15,
       orderedAt: Date.now(),
-      status: 'BEING PREPARED'
+      status: 'CREATED'
     })
     .then(order => {
       order.setUser(1);
@@ -99,7 +103,7 @@ async function seed () {
     Order.create({
       total: 100.25,
       orderedAt: Date.now(),
-      status: 'SHIPPED'
+      status: 'PROCESSING'
     })
     .then(order => {
       order.setUser(1);
@@ -107,7 +111,7 @@ async function seed () {
     Order.create({
       total: 1337.88,
       orderedAt: Date.now(),
-      status: 'EN ROUTE'
+      status: 'COMPLETED'
     })
     .then(order => {
       order.setUser(2);
