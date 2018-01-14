@@ -37,17 +37,17 @@ async function seed () {
 
 
   const products = await Promise.all([
-    Product.create({title: 'Baby Starters Plush Snuggle Buddy , Sugar N Spice Doll', price: 12.60, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/41InACBfmhL._AC_US240_FMwebp_QL65_.jpg', secondaryImages: ['https://images-na.ssl-images-amazon.com/images/I/81wFwKqmdML._SY679_.jpg', 'https://images-na.ssl-images-amazon.com/images/I/31JAhZM5koL.jpg'], quantity: 3, description: 'a cool toy'})
+    Product.create({title: 'Baby Starters Plush Snuggle Buddy , Sugar N Spice Doll', price: 12.60, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/41InACBfmhL._AC_US240_FMwebp_QL65_.jpg', secondaryImages: ['https://images-na.ssl-images-amazon.com/images/I/81wFwKqmdML._SY679_.jpg', 'https://images-na.ssl-images-amazon.com/images/I/31JAhZM5koL.jpg'], quantity: 3, description: 'a cool toy'})
     .then(product => product.addCategories([1])),
-    Product.create({title: 'Sock Monkey Hooded Towel and 2 Washcloth Set by Baby', price: 17.62, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/51hXthat5oL._AC_US240_FMwebp_QL65_.jpg', quantity: 4, description: 'a cool toy'})
+    Product.create({title: 'Sock Monkey Hooded Towel and 2 Washcloth Set by Baby', price: 17.62, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51hXthat5oL._AC_US240_FMwebp_QL65_.jpg', quantity: 4, description: 'a cool toy'})
     .then(product => product.addCategories([1, 2])),
-    Product.create({title: 'Rashti & Rashti My First Year Picture Frame, Silver', price: 18.99, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/512kUUmpbWL._AC_US240_FMwebp_QL65_.jpg', secondaryImages: ['https://images-na.ssl-images-amazon.com/images/I/81HeNIMWAjL._SX522_.jpg'], quantity: 0, description: 'a cool toy'})
+    Product.create({title: 'Rashti & Rashti My First Year Picture Frame, Silver', price: 18.99, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/512kUUmpbWL._AC_US240_FMwebp_QL65_.jpg', secondaryImages: ['https://images-na.ssl-images-amazon.com/images/I/81HeNIMWAjL._SX522_.jpg'], quantity: 0, description: 'a cool toy'})
     .then(product => product.addCategories([3]))
     ,
-    Product.create({title: 'Baby Starters Sock Monkey Blanket', price: 17.99, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/51+8BLb2OSL._AC_US240_FMwebp_QL65_.jpg', quantity: 10, description: 'a cool toy'})
+    Product.create({title: 'Baby Starters Sock Monkey Blanket', price: 17.99, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51+8BLb2OSL._AC_US240_FMwebp_QL65_.jpg', quantity: 10, description: 'a cool toy'})
     .then(product => product.addCategories([1, 3]))
     ,
-    Product.create({title: 'Babystarters Sock Monkey Sweater Knit Plush Toy', price: 21.00, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/51ckaVeINkL._AC_US240_FMwebp_QL65_.jpg', quantity: 5, description: 'a cool toy'})
+    Product.create({title: 'Babystarters Sock Monkey Sweater Knit Plush Toy', price: 21.00, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51ckaVeINkL._AC_US240_FMwebp_QL65_.jpg', quantity: 5, description: 'a cool toy'})
     .then(product => product.addCategories([1, 2]))
   ])
   .catch(err => {

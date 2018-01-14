@@ -8,7 +8,7 @@ module.exports = router;
 router.get('/', (req, res, next) => {
   Product.findAll({
     // explicitly select only the columns needed
-    attributes: ['id', 'title', 'price', 'primaryImageURL'],
+    attributes: ['id', 'title', 'price', 'imageURL', 'secondaryImages'],
   })
     .then(products => res.json(products))
     .catch(next);
