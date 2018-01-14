@@ -8,7 +8,7 @@ router.get('/:category', (req, res, next) => {
     include: [{ model: Product }],
   }).then(products => {
     res.json(products);
-  });
+  }).catch(next);
 });
 
 module.exports = router;

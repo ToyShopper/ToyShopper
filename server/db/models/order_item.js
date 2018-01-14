@@ -3,11 +3,11 @@ const db = require('../db');
 
 const OrderItem = db.define('order_item', {
   quantity: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
   },
   priceAtOrder: {
-    type: Sequelize.DECIMAL
-  }
+    type: Sequelize.DECIMAL,
+  },
 });
 
 module.exports = OrderItem;
