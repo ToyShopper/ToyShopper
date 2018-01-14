@@ -11,7 +11,7 @@ const Product = db.define('product', {
   price: {
     type: Sequelize.DECIMAL
   },
-  primaryImageURL: {
+  imageURL: {
     type: Sequelize.STRING,
     defaultValue:
       'https://target.scene7.com/is/image/Target/14025792?wid=520&hei=520&fmt=pjpeg',
