@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
@@ -38,9 +39,11 @@ const AuthForm = (props) => {
       </Form>
       </Segment>
       <Segment>
-      <Button color='google plus'>
-      <Icon name='google plus' /> Login with Google
-    </Button>
+        <Link to="/auth/google">
+          <Button color='google plus'>
+          <Icon name='google plus' /> Login with Google
+          </Button>
+        </Link>
       </Segment>
       </Segment.Group>
     </div>
@@ -77,7 +80,6 @@ const mapDispatch = (dispatch) => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      console.log(email, password, formName)
       dispatch(auth(email, password, formName))
     }
   }
