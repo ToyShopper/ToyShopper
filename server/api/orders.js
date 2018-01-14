@@ -18,9 +18,14 @@ router.get('/', (req, res, next) => {
     attributes: ['id', 'total', 'orderedAt', 'status'],
     include: [{model: OrderItem, attributes: ['id', 'quantity', 'priceAtOrder', 'productId']}, {model: User, attributes: ['id', 'email', 'firstName', 'lastName']}]
   })
-  .then(orders => res.json(orders))
+ .then(orders => res.json(orders))
   .catch(next);
 });
+
+router.get('/statuses', (req, res, next) => {
+  Order.aggregate('status', 'DISTINCT', {plain: false})
+  .then(result => res.json(result));
+})
 
 router.get('/:id', (req, res, next) => {
   Order.findOne({
