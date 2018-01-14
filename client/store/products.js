@@ -33,7 +33,7 @@ export const fetchProducts = () => dispatch =>
 export const fetchProductsByCategory = category => dispatch =>
   axios
     .get(`/api/categories/${category}`)
-    .then(res => dispatch(getProductsByCategory(res.data)))
+    .then(res => dispatch(getProductsByCategory(res.data.products)))
     .catch(err => console.log(err));
 
 export const fetchProductsBySearch = keyword => dispatch =>

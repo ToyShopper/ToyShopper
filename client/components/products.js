@@ -28,7 +28,7 @@ class Products extends Component {
           <Item.Group divided>
             {products.map(product => (
               <Item key={product.id}>
-                <Item.Image src={product.imageURL} />
+                <Item.Image src={product.primaryImageURL} />
                 <Item.Content>
                   <Item.Header as={Link} to={'/products/' + product.id}>{product.title}</Item.Header>
                   <Item.Description>Price: ${product.price}</Item.Description>
