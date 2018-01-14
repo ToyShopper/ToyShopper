@@ -1,40 +1,54 @@
 const router = require('express').Router();
-const db = require('../db');
 const { Order } = require('../db/models');
 const { OrderItem } = require('../db/models');
 const { User } = require('../db/models');
 const { Product } = require('../db/models');
 
-
 module.exports = router;
 
 router.get('/', (req, res, next) => {
   let whereStatement = {};
-  if (req.query.status){
+  if (req.query.status) {
     whereStatement.status = req.query.status;
   }
   Order.findAll({
     where: whereStatement,
     attributes: ['id', 'total', 'orderedAt', 'status'],
-    include: [{model: OrderItem, attributes: ['id', 'quantity', 'priceAtOrder', 'productId']}, {model: User, attributes: ['id', 'email', 'firstName', 'lastName']}]
+    include: [
+      {
+        model: OrderItem,
+        attributes: ['id', 'quantity', 'priceAtOrder', 'productId'],
+      },
+      { model: User, attributes: ['id', 'email', 'firstName', 'lastName'] },
+    ],
   })
-  .then(orders => res.json(orders))
-  .catch(next);
+    .then(orders => res.json(orders))
+    .catch(next);
+});
+
+router.get('/statuses', (req, res, next) => {
+  Order.aggregate('status', 'DISTINCT', { plain: false }).then(result =>
+    res.json(result),
+  );
 });
 
 router.get('/:id', (req, res, next) => {
   Order.findOne({
     where: {
-      id: req.params.id
+      id: req.params.id,
     },
     attributes: ['id', 'total', 'orderedAt', 'status'],
     include: [
-      {model: OrderItem, attributes: ['id', 'quantity', 'priceAtOrder', 'productId'], include: [Product]},
-      {model: User, attributes: ['id', 'email', 'firstName', 'lastName']}
-    ]
+      {
+        model: OrderItem,
+        attributes: ['id', 'quantity', 'priceAtOrder', 'productId'],
+        include: [Product],
+      },
+      { model: User, attributes: ['id', 'email', 'firstName', 'lastName'] },
+    ],
   })
-  .then(order => res.json(order))
-  .catch(next);
+    .then(order => res.json(order))
+    .catch(next);
 });
 
 router.post('/', (req, res, next) => {
@@ -43,25 +57,27 @@ router.post('/', (req, res, next) => {
   // 3. create order items using the order id above and given product ids
   // 4. empty the shopping cart
   const newOrder = req.body;
-  Order.create(newOrder, {include: [OrderItem]})
-  .then(order => {
-    req.session.cart = {items: {}, total: 0};
-    res.json(order)
-  })
-  .catch(next);
+  Order.create(newOrder, { include: [OrderItem] })
+    .then(order => {
+      req.session.cart = { items: {}, total: 0 };
+      res.json(order);
+    })
+    .catch(next);
 });
 
 router.delete('/:id', (req, res, next) => {
   OrderItem.destroy({
     where: {
-      orderId: req.params.id
-    }
+      orderId: req.params.id,
+    },
   })
-  .then(Order.destroy({
-    where: {
-      id: req.params.id
-    }
-  }))
-  .then(() => res.status(204).end())
-  .catch(next);
+    .then(
+      Order.destroy({
+        where: {
+          id: req.params.id,
+        },
+      }),
+    )
+    .then(() => res.status(204).end())
+    .catch(next);
 });

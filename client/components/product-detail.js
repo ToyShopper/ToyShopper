@@ -39,6 +39,7 @@ class ProductDetail extends Component {
       id: product.id,
       title: product.title,
       price: product.price,
+      imageURL: product.imageURL,
       quantity: Number(this.state.quantity),
     }
     this.props.addItemToCart(item);

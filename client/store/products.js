@@ -33,8 +33,9 @@ export const fetchProducts = () => dispatch =>
     .catch(err => console.log(err));
 
 export const fetchProductsByCategory = category => dispatch =>
-  axios.get(`/api/categories/${category}`)
-    .then(res => dispatch(getProductsByCategory(res.data)))
+  axios
+    .get(`/api/categories/${category}`)
+    .then(res => dispatch(getProductsByCategory(res.data.products)))
     .catch(err => console.log(err));
 
 export const fetchProductsBySearch = keyword => dispatch =>

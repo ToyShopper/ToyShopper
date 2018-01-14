@@ -5,7 +5,8 @@ import history from '../history'
  * ACTION TYPES
  */
 const GET_ORDERS = 'GET_ORDERS';
-const CONFIRM_NEW_ORDER = 'CONFIRM_NEW_ORDER'
+const CONFIRM_NEW_ORDER = 'CONFIRM_NEW_ORDER';
+const FILTER_ORDERS = 'FILTER_ORDERS';
 
 /**
  * ACTION CREATORS
@@ -13,6 +14,11 @@ const CONFIRM_NEW_ORDER = 'CONFIRM_NEW_ORDER'
 const getOrders = orders => ({
   type: GET_ORDERS, orders
 });
+
+const filterOrders = orders => ({
+  type: FILTER_ORDERS, orders
+});
+
 const confirmNewOrder = order => ({ type: CONFIRM_NEW_ORDER, order })
 
 /**
@@ -30,7 +36,12 @@ export const confirmOrder = (newOrder) => dispatch =>
       dispatch(confirmNewOrder(res.data));
       history.push('/cart');
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err));
+
+export const fetchOrdersByStatus = status => dispatch =>
+    axios.get('/api/orders/?status=' + status)
+    .then(res => dispatch(filterOrders(res.data)))
+    .catch(err => console.log(err));
 
 /**
  * REDUCER
@@ -39,8 +50,10 @@ export default function (state = [], action) {
   switch (action.type) {
     case GET_ORDERS:
       return action.orders;
+    case FILTER_ORDERS:
+      return action.orders;
     case CONFIRM_NEW_ORDER:
-      return [...state, action.order]
+      return [...state, action.order];
     default:
       return state;
   }

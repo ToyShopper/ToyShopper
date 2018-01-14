@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchCart } from '../store/cart';
 import { confirmOrder } from '../store/orders';
-import { Item, Form } from 'semantic-ui-react'
-
+import { Item, Form, Segment } from 'semantic-ui-react'
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -29,7 +28,7 @@ class Checkout extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const {cart, confirm} = this.props;
+    const { cart, confirm } = this.props;
     let orderItems = Object.keys(cart.items).map(itemId => cart.items[itemId])
       .map(item => ({ productId: item.id, quantity: item.quantity, priceAtOrder: item.price }));
     const newOrder = {
@@ -44,10 +43,13 @@ class Checkout extends Component {
   renderItem(item) {
     return (
       <Item key={item.id}>
+        <Item>
+          <Item.Image size="small" src={item.imageURL} />
+        </Item>
         <Item.Content>
-          <Item.Header>{item.title}</Item.Header>
+          <Item.Header as="h3">{item.title}</Item.Header>
           <Item.Description as="h4">Price: ${item.price}</Item.Description>
-          <Item.Description>Quantity: {item.quantity}</Item.Description>
+          <Item.Description as="h4">Quantity: {item.quantity}</Item.Description>
         </Item.Content>
       </Item>
     )
@@ -58,14 +60,16 @@ class Checkout extends Component {
     return (
       <div>
         <h1>Checkout</h1>
-        <Item.Group divided>
-        {
-          Object.keys(cart.items).map(itemId => this.renderItem(cart.items[itemId]))
-        }
-        </Item.Group>
+        <Segment raised>
+          <Item.Group divided>
+            {
+              Object.keys(cart.items).map(itemId => this.renderItem(cart.items[itemId]))
+            }
+          </Item.Group>
+        </Segment>
         <h3>Total: ${cart.total}</h3>
         <Form onSubmit={this.handleSubmit}>
-          <Form.Button>Confirm Your Order</Form.Button>
+          <Form.Button positive>Confirm Your Order</Form.Button>
         </Form>
       </div>
     );
