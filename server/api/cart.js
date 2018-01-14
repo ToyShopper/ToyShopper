@@ -34,7 +34,6 @@ router.post('/', (req, res, next) => {
 router.put('/', (req, res, next) => {
   let cart = req.session.cart || {items: {}, total: 0};
   const items = req.body;
-
   Object.keys(items).forEach(itemId => {
     const item = items[itemId];
     if (item.quantity === 0) {
@@ -60,11 +59,11 @@ router.delete('/:id', (req, res, next) => {
 });
 
 function calculateTotal(items) {
-  const total = Object.keys(items).reduce((total, itemId) => {
+  const totalAmount = Object.keys(items).reduce((total, itemId) => {
     const item = items[itemId];
     return total + item.price * item.quantity;
   }, 0);
-  return Math.round(total * 100) / 100;
+  return Math.round(totalAmount * 100) / 100;
 }
 
 module.exports = router;
