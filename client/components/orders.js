@@ -34,7 +34,7 @@ class Orders extends Component {
   }
 
   render() {
-    const { orders, statuses, onFilterClick } = this.props;
+    const { orders, statuses, onFilterClick, loadOrders } = this.props;
     let statusArr = statuses.map(statusObj => {
       return statusObj['DISTINCT']
     });
@@ -49,8 +49,8 @@ class Orders extends Component {
                 return (
                   <Dropdown.Item key={status} text={status} onClick={onFilterClick}/>
                 )
-              })
-              }
+              })}
+              <Dropdown.Item text="ALL" onClick={loadOrders} />
             </Dropdown.Menu>
           </Dropdown.Menu>
         </Dropdown>
