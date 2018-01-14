@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProductDetail } from '../store/product';
 import { addToCart } from '../store/cart';
 import { fetchReviewsForProduct } from '../store/reviews';
-import { Item, Comment, Form, Header, Rating } from 'semantic-ui-react'
+import { Item, Comment, Form, Header, Rating, Segment, Button, Divider } from 'semantic-ui-react'
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -82,6 +83,12 @@ class ProductDetail extends Component {
           <Header as="h2" dividing>Reviews for this product</Header>
           {reviews.map(review => this.renderReview(review))}
         </Comment.Group>)}
+
+        {/* {this.user && this.user.isAdmin &&  */}
+        <Segment>
+          <Button as={Link} to={'/products/' + product.id + '/edit'} floated="right">Edit this product</Button>
+          <Divider horizontal>Admin Only</Divider>
+        </Segment>
       </div>)
   }
 }

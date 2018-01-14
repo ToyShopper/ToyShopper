@@ -15,6 +15,11 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 
+router.post('/', (req, res, next) => {
+  Product.create(req.body)
+  .then(product => res.json(product));
+});
+
 router.get('/search/:keyword', (req, res, next) => {
   Product.findAll({
     where: {
@@ -66,4 +71,12 @@ router.get('/:id/reviews', (req, res, next) => {
   })
     .then(reviews => res.json(reviews))
     .catch(next);
+});
+
+router.put('/:id', (req, res, next) => {
+  Product.findById(req.params.id)
+  .then(product => {
+    product.update(req.body)
+    .then(newProduct => res.json(newProduct));
+  });
 });
