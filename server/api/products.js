@@ -16,11 +16,7 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/add', (req, res, next) => {
-  res.send('add user here');
-});
-
-router.post('/add', (req, res, next) => {
+router.post('/', (req, res, next) => {
   Product.create(req.body)
   .then(product => res.json(product));
 });

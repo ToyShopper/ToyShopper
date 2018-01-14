@@ -9,10 +9,7 @@ const Product = db.define('product', {
     type: Sequelize.TEXT
   },
   price: {
-    type: Sequelize.DECIMAL// this will format the price: ,
-    // get() {
-    //   return '$' + this.getDataValue('price').toLocaleString('en-US', { style: 'currency', currency: 'USD'});
-    // }
+    type: Sequelize.DECIMAL
   },
   imageURL: {
     type: Sequelize.STRING,
