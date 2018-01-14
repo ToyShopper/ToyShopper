@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
+import { Button, Checkbox, Form, Divider, Segment, Message, Icon } from 'semantic-ui-react'
 
 /**
  * COMPONENT
@@ -11,21 +12,37 @@ const AuthForm = (props) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} name={name}>
+      <Segment.Group compact>
+      <Segment compact>
+      <Form onSubmit={handleSubmit} name={name}>
+        <Form.Field>
+          <label htmlFor="email">Email Address</label>
+          <input placeholder="Email Address" name="email" />
+        </Form.Field>
+        <Form.Field>
+          <label>Password</label>
+          <input placeholder="Password" name="password" type="password"/>
+        </Form.Field>
+        <Divider horizontal />
+        <Form.Field>
+          <Checkbox label="I agree to the Terms and Conditions" />
+        </Form.Field>
+        <Button type="submit">{displayName}</Button>
+        <Divider horizontal />
+        {error && error.response &&
         <div>
-          <label htmlFor="email"><small>Email</small></label>
-          <input name="email" type="text" />
-        </div>
-        <div>
-          <label htmlFor="password"><small>Password</small></label>
-          <input name="password" type="password" />
-        </div>
-        <div>
-          <button type="submit">{displayName}</button>
-        </div>
-        {error && error.response && <div> {error.response.data} </div>}
-      </form>
-      <a href="/auth/google">{displayName} with Google</a>
+        <Message negative>
+          <Message.Header>{error.response.data}</Message.Header>
+        </Message>
+        </div>}
+      </Form>
+      </Segment>
+      <Segment>
+      <Button color='google plus'>
+      <Icon name='google plus' /> Login with Google
+    </Button>
+      </Segment>
+      </Segment.Group>
     </div>
   )
 }
@@ -60,6 +77,7 @@ const mapDispatch = (dispatch) => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
+      console.log(email, password, formName)
       dispatch(auth(email, password, formName))
     }
   }
