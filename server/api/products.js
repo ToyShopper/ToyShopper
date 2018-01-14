@@ -35,7 +35,8 @@ router.get('/:id', (req, res, next) => {
       id: req.params.id,
     },
   })
-    .then(product => res.json(product))
+    .then(product => {
+      res.json(product)})
     .catch(next);
 });
 
@@ -51,6 +52,9 @@ router.get('/:id/reviews', (req, res, next) => {
       },
     ],
   })
-    .then(reviews => res.json(reviews))
+    .then(reviews => {
+      // let averageRating = (reviews.map(review => review.rating)
+      // .reduce((sum, rating) => sum + rating)) / reviews.length;
+      res.json(reviews)})
     .catch(next);
 });

@@ -26,6 +26,15 @@ const Product = db.define('product', {
   quantity: {
     type: Sequelize.INTEGER,
   },
+  averageRating: {
+    type: Sequelize.VIRTUAL,
+    set (valueToBeSet) { // defines the 'setter'
+     this.setDataValue('averageRating', valueToBeSet)
+     // this setter will automatically set the 'name' property to be uppercased
+   }, get() {
+     return this.getDataValue('averageRating')
+   }
+  }
 });
 
 module.exports = Product;

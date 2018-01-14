@@ -14,7 +14,7 @@ const Review = db.define('review', {
       min: 0,
       max: 5,
     }
-  }
+  },
 });
 
 module.exports = Review;
