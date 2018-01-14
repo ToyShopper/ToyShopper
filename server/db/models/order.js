@@ -1,22 +1,22 @@
-const Sequelize = require('sequelize')
-const db = require('../db')
+const Sequelize = require('sequelize');
+const db = require('../db');
 
 const Order = db.define('order', {
   total: {
-    type: Sequelize.DECIMAL
+    type: Sequelize.DECIMAL,
   },
   orderedAt: {
-    type: Sequelize.DATE
+    type: Sequelize.DATE,
   },
   status: {
-    type: Sequelize.ENUM('CREATED', 'PROCESSING', 'CANCELLED', 'COMPLETED')
+    type: Sequelize.ENUM('CREATED', 'PROCESSING', 'CANCELLED', 'COMPLETED'),
   },
   email: {
     type: Sequelize.STRING,
-    validate : {
+    validate: {
       isEmail: true,
-    }
-  }
+    },
+  },
 });
 
 module.exports = Order;
