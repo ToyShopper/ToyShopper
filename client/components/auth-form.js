@@ -39,7 +39,7 @@ const AuthForm = (props) => {
         </div>}
       </Form>
       <Divider></Divider>
-        <Link to="/auth/google" traget="_self">
+        <Link to="/auth/google" target="_self">
           <Button color='google plus'>
           <Icon name='google plus' /> Login with Google
           </Button>
