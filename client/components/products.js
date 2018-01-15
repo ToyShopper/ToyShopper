@@ -36,7 +36,7 @@ class Products extends Component {
                 <Item.Image src={product.imageURL} />
                 <Item.Content>
                   <Item.Header as={Link} to={'/products/' + product.id}>{product.title}</Item.Header>
-                  <Item.Description>Price: ${product.price}</Item.Description>
+                  <Item.Description as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Description>
                   <Item.Extra>
                     {product.categories ? product.categories.map(category => (
                     <Label key={category.id} as={Link} to={'/categories/' + category.name}>

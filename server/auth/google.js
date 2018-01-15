@@ -32,13 +32,14 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 
   const strategy = new GoogleStrategy(googleConfig, (token, refreshToken, profile, done) => {
     const googleId = profile.id
-    const name = profile.displayName
+    const [firstName, lastName] = profile.displayName.split(' ')
     const email = profile.emails[0].value
+    const role = 'user'
 
     User.find({where: {googleId}})
       .then(foundUser => (foundUser
         ? done(null, foundUser)
-        : User.create({name, email, googleId})
+        : User.create({firstName, lastName, email, googleId, role})
           .then(createdUser => done(null, createdUser))
       ))
       .catch(done)

@@ -41,7 +41,7 @@ class ProductDetail extends Component {
     const item = {
       id: product.id,
       title: product.title,
-      price: product.price,
+      price: Number(product.price),
       imageURL: product.imageURL,
       quantity: Number(this.state.quantity),
     }
@@ -113,7 +113,7 @@ class ProductDetail extends Component {
               <Header as="h1" dividing>{product.title}</Header>
               <Item.Content>
                 <Item.Image size="large" src={product.imageURL} />
-                <Item.Extra as="h4">Price: ${product.price}</Item.Extra>
+                <Item.Extra as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Extra>
                 <Item.Meta as="h4">Item Description</Item.Meta>
                 <Item.Description as="p">{product.description}</Item.Description>
                 <Form name="quantity" onSubmit={(event) => this.handleQuantitySubmit(event, product)}>

@@ -15,6 +15,14 @@ const router = require('express').Router()
 
 router.get('/', (req, res, next) => {
   let cart = req.session.cart || {items: {}, total: 0 };
+  cart.total = calculateTotal(cart.items);
+  Object.keys(cart.items).forEach(itemId => {
+    const item = cart.items[itemId];
+    if (item.quantity === 0) {
+      delete cart.items[item.id];
+    }
+  });
+  req.session.cart = cart;
   res.json(cart);
 })
 
@@ -22,13 +30,13 @@ router.post('/', (req, res, next) => {
   let cart = req.session.cart || {items: {}, total: 0 };
   const item = req.body;
   if (cart.items[item.id]) {
-    cart.items[item.id].quantity += item.quantity;
+    cart.items[item.id].quantity += Number(item.quantity);
   } else {
     cart.items[item.id] = item;
   }
   cart.total = calculateTotal(cart.items);
   req.session.cart = cart;
-  res.json(req.session.cart);
+  res.json(cart);
 });
 
 router.put('/', (req, res, next) => {
@@ -36,15 +44,14 @@ router.put('/', (req, res, next) => {
   const items = req.body;
   Object.keys(items).forEach(itemId => {
     const item = items[itemId];
+    cart.items[itemId].quantity = Number(item.quantity);
     if (item.quantity === 0) {
-      delete items[item.id];
+      delete cart.items[item.id];
     }
   });
-
-  cart.items = items;
-  cart.total = calculateTotal(items);
+  cart.total = calculateTotal(cart.items);
   req.session.cart = cart;
-  res.json(req.session.cart);
+  res.json(cart);
 });
 
 router.delete('/:id', (req, res, next) => {
@@ -55,13 +62,13 @@ router.delete('/:id', (req, res, next) => {
   }
   cart.total = calculateTotal(cart.items);
   req.session.cart = cart;
-  res.json(req.session.cart);
+  res.json(cart);
 });
 
 function calculateTotal(items) {
   const totalAmount = Object.keys(items).reduce((total, itemId) => {
     const item = items[itemId];
-    return total + item.price * item.quantity;
+    return total + Number(item.price) * Number(item.quantity);
   }, 0);
   return Math.round(totalAmount * 100) / 100;
 }
