@@ -11,7 +11,7 @@ class Cart extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = Object.assign({}, props.cart);
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,13 +26,16 @@ class Cart extends Component {
     this.setState(props.cart);
   }
 
-  handleChange(itemId) {
+  handleChange(item) {
+    console.log('STATE:', this.state);
     return event => {
-      let itemToChange = Object.assign({}, this.state[itemId], { quantity: Number(event.target.value) });
+      let quantity = isNaN(event.target.value) ? 0 : Number(event.target.value);
+      let itemToChange = Object.assign({}, this.state[item.id]);
+      itemToChange.quantity = quantity;
       this.setState({
-        items: {
-          [itemId]: itemToChange
-        }
+        items: Object.assign({}, this.state.items, {
+          [item.id]: itemToChange
+        }),
       });
     };
   }
@@ -55,13 +58,14 @@ class Cart extends Component {
         </Item>
         <Item>
           <Item.Header as="h3">{item.title}</Item.Header>
-          <Item.Description as="h4">Price: ${item.price}</Item.Description>
+          <Item.Description as="h4">Price: ${Number(item.price).toFixed(2)}</Item.Description>
           <Input
             id={'quantity_' + item.id}
             label={{size: 'tiny', color: 'grey', content: 'Quantity'}}
             labelPosition="left"
+            type="number" min={0}
             value={this.state.items[item.id].quantity}
-            onChange={this.handleChange(item.id)} />
+            onChange={this.handleChange(item)} />
           <Button onClick={() => this.handleDelete(item)} icon labelPosition="left">
             <Icon name="trash" />Remove Item</Button>
         </Item>
@@ -71,17 +75,18 @@ class Cart extends Component {
 
   render() {
     const { cart } = this.props;
+    const items = !cart.items ? [] : Object.keys(cart.items).map(itemId => cart.items[itemId]);
     return (
       <div>
         <h1>Shopping Cart</h1>
         <Segment raised>
-        {Object.keys(cart.items).length === 0 &&
+        {items.length === 0 &&
           (<h3>Your shopping cart is empty.</h3>)}
-        {Object.keys(this.state).length > 0 &&
+        {items.length > 0 &&
           (
             <Item.Group divided>
               {
-                Object.keys(cart.items).map(itemId => this.renderItem(cart.items[itemId]))
+                items.map(item => this.renderItem(item))
               }
             </Item.Group>
           )
