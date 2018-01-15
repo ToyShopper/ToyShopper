@@ -24,7 +24,7 @@ class Products extends Component {
     return (
       <div>
         {/* {this.user && this.user.isAdmin &&  */}
-        {user.role === 'admin' && <Segment>
+        {user && user.role === 'admin' && <Segment>
           <Button as={Link} to="/products/add" floated="right">Add a new product</Button>
           <Divider horizontal>Admin Only</Divider>
         </Segment>}
