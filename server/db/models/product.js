@@ -9,12 +9,9 @@ const Product = db.define('product', {
     type: Sequelize.TEXT,
   },
   price: {
-    type: Sequelize.DECIMAL, // this will format the price: ,
-    // get() {
-    //   return '$' + this.getDataValue('price').toLocaleString('en-US', { style: 'currency', currency: 'USD'});
-    // }
+    type: Sequelize.DECIMAL
   },
-  primaryImageURL: {
+  imageURL: {
     type: Sequelize.STRING,
     defaultValue:
       'https://target.scene7.com/is/image/Target/14025792?wid=520&hei=520&fmt=pjpeg',

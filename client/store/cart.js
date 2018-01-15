@@ -52,6 +52,7 @@ export default function (state = {items: {}, total: 0}, action) {
     case GET_CART:
     case ADD_ITEM_TO_CART:
     case REMOVE_ITEM_FROM_CART:
+      return action.cart;
     case UPDATE_CART_ITEM_QUANTITIES:
       return action.cart;
     default:

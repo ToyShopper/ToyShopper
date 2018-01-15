@@ -13,7 +13,6 @@ router.get('/', (req, res, next) => {
   }
   Order.findAll({
     where: whereStatement,
-    attributes: ['id', 'total', 'orderedAt', 'status'],
     include: [
       {
         model: OrderItem,
@@ -37,7 +36,6 @@ router.get('/:id', (req, res, next) => {
     where: {
       id: req.params.id,
     },
-    attributes: ['id', 'total', 'orderedAt', 'status'],
     include: [
       {
         model: OrderItem,
@@ -57,12 +55,34 @@ router.post('/', (req, res, next) => {
   // 3. create order items using the order id above and given product ids
   // 4. empty the shopping cart
   const newOrder = req.body;
+  newOrder.user = req.user;
   Order.create(newOrder, { include: [OrderItem] })
     .then(order => {
       req.session.cart = { items: {}, total: 0 };
       res.json(order);
     })
     .catch(next);
+});
+
+router.put('/:id', (req, res, next) => {
+  Order.update(req.body, {
+    where: {
+      id: {
+        $eq: req.params.id,
+      }
+    },
+    returning: true,
+  })
+  .spread((count, [updatedOrder]) => {
+    if (count > 0) {
+      res.status(200); // 200 OK
+      res.send(updatedOrder.dataValues);
+    } else {
+      res.status(204); // 204 No Content
+      res.send('204 No Content');
+    }
+  })
+  .catch(next);
 });
 
 router.delete('/:id', (req, res, next) => {

@@ -37,17 +37,50 @@ async function seed () {
 
 
   const products = await Promise.all([
-    Product.create({title: 'Baby Starters Plush Snuggle Buddy , Sugar N Spice Doll', price: 12.60, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/41InACBfmhL._AC_US240_FMwebp_QL65_.jpg', secondaryImages: ['https://images-na.ssl-images-amazon.com/images/I/81wFwKqmdML._SY679_.jpg', 'https://images-na.ssl-images-amazon.com/images/I/31JAhZM5koL.jpg'], quantity: 3, description: 'a cool toy'})
+    Product.create({
+      title: 'Baby Starters Plush Snuggle Buddy , Sugar N Spice Doll', price: 12.60, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/41InACBfmhL._AC_US240_FMwebp_QL65_.jpg', secondaryImages: ['https://images-na.ssl-images-amazon.com/images/I/81wFwKqmdML._SY679_.jpg', 'https://images-na.ssl-images-amazon.com/images/I/31JAhZM5koL.jpg'], quantity: 3, description: `
+- 100% polyester
+- Imported
+- This loveable doll is the perfect friend for a little girl
+- Babies love the super soft fabric, satin lining and cute character
+- Snuggle Buddy is a plush toy that doubles as a security blanket
+- Only friends made by Rashti and Rashti can be called a Snuggle Buddy
+- Machine washable`})
     .then(product => product.addCategories([1])),
-    Product.create({title: 'Sock Monkey Hooded Towel and 2 Washcloth Set by Baby', price: 17.62, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/51hXthat5oL._AC_US240_FMwebp_QL65_.jpg', quantity: 4, description: 'a cool toy'})
+    Product.create({
+      title: 'Sock Monkey Hooded Towel and 2 Washcloth Set by Baby', price: 17.62, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51hXthat5oL._AC_US240_FMwebp_QL65_.jpg', quantity: 4, description: `
+- 100% Cotton
+- Sock Monkey Ivory Towel Gift Set
+- 3 piece set
+- 1 Hooded Bath Towel
+- 2 Wash Cloths
+- Cotton-Machine Wash
+    `})
     .then(product => product.addCategories([1, 2])),
-    Product.create({title: 'Rashti & Rashti My First Year Picture Frame, Silver', price: 18.99, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/512kUUmpbWL._AC_US240_FMwebp_QL65_.jpg', secondaryImages: ['https://images-na.ssl-images-amazon.com/images/I/81HeNIMWAjL._SX522_.jpg'], quantity: 0, description: 'a cool toy'})
+    Product.create({
+      title: 'Rashti & Rashti My First Year Picture Frame, Silver', price: 18.99, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/512kUUmpbWL._AC_US240_FMwebp_QL65_.jpg', secondaryImages: ['https://images-na.ssl-images-amazon.com/images/I/81HeNIMWAjL._SX522_.jpg'], quantity: 0, description: `
+- Frame showcases 13 photos from baby's first year
+- Decorative silver metallic frame complements any nursery and home
+- Perfect new baby gift
+- Frame comes packaged in a gift box for easy giving
+    `})
     .then(product => product.addCategories([3]))
     ,
-    Product.create({title: 'Baby Starters Sock Monkey Blanket', price: 17.99, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/51+8BLb2OSL._AC_US240_FMwebp_QL65_.jpg', quantity: 10, description: 'a cool toy'})
+    Product.create({title: 'Baby Starters Sock Monkey Blanket', price: 29.75, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51+8BLb2OSL._AC_US240_FMwebp_QL65_.jpg', quantity: 10, description: `
+- Made of Cotton, Polyester
+- Machine wash cold. Do not bleach. Tumble dry low.
+- Measures to be about 30" x 40"
+- Perfect blanket for at home or on the go!
+    `})
     .then(product => product.addCategories([1, 3]))
     ,
-    Product.create({title: 'Babystarters Sock Monkey Sweater Knit Plush Toy', price: 21.00, primaryImageURL: 'https://images-na.ssl-images-amazon.com/images/I/51ckaVeINkL._AC_US240_FMwebp_QL65_.jpg', quantity: 5, description: 'a cool toy'})
+    Product.create({title: 'Babystarters Sock Monkey Sweater Knit Plush Toy', price: 19.99, imageURL: 'https://images-na.ssl-images-amazon.com/images/I/51ckaVeINkL._AC_US240_FMwebp_QL65_.jpg', quantity: 5, description: `
+- Rashti & Rashti
+- Sock Monkey Sweater Knit Plush with Rattle
+- Appr 12 inch
+- Sweater Knit
+- Rattle
+    `})
     .then(product => product.addCategories([1, 2]))
   ])
   .catch(err => {
@@ -95,7 +128,8 @@ async function seed () {
     Order.create({
       total: 15,
       orderedAt: Date.now(),
-      status: 'CREATED'
+      status: 'CREATED',
+      email: 'cody@email.com',
     })
     .then(order => {
       order.setUser(1);
@@ -103,7 +137,8 @@ async function seed () {
     Order.create({
       total: 100.25,
       orderedAt: Date.now(),
-      status: 'PROCESSING'
+      status: 'PROCESSING',
+      email: 'cody@email.com',
     })
     .then(order => {
       order.setUser(1);
@@ -111,7 +146,8 @@ async function seed () {
     Order.create({
       total: 1337.88,
       orderedAt: Date.now(),
-      status: 'COMPLETED'
+      status: 'COMPLETED',
+      email: 'murphy@email.com',
     })
     .then(order => {
       order.setUser(2);

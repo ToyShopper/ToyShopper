@@ -3,7 +3,12 @@ import {connect} from 'react-redux'
 import {Route, Switch, Router} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import {Main, Login, Signup, UserHome, AllProducts, ProductDetail, Cart, UserList, UserDetail, ProductsByCategory, ProductsBySearch, Orders, Order, Checkout} from './components'
+import {Main, Login, Signup, UserHome,
+  AllProducts, ProductsByCategory, ProductsBySearch,
+  ProductDetail, AddProductForm, EditProductForm,
+  Cart, Checkout,
+  UserList, UserDetail,
+  Orders, Order} from './components'
 import {me} from './store'
 
 /**
@@ -24,12 +29,17 @@ class Routes extends Component {
             {/* Routes placed here are available to all visitors */}
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <Route path="/products/search/:keyword" component={ProductsBySearch} />
             <Route path="/categories/:category" component={ProductsByCategory} />
-            <Route path="/products/:id" component={ProductDetail} />
+            <Route exact path="/products/search/:keyword" component={ProductsBySearch} />
+            <Route exact path="/products/add" component={AddProductForm} />
+            <Route exact path="/products/:id/edit" component={EditProductForm} />
+            <Route exact path="/products/:id" component={ProductDetail} />
+            <Route exact path="/products" component={AllProducts} />
+
+
             <Route path="/users/:id" component={UserDetail} />
             <Route path ="/users" component={UserList} />
-            <Route exact path="/products" component={AllProducts} />
+
             <Route path="/cart" component={Cart} />
             <Route path="/checkout" component={Checkout} />
             <Route path="/orders/:id" component={Order} />
