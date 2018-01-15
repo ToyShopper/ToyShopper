@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
-import { Button, Checkbox, Form, Divider, Segment, Message, Icon } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Divider, Segment, Message, Icon, Grid } from 'semantic-ui-react'
 
 /**
  * COMPONENT
@@ -13,8 +13,11 @@ const AuthForm = (props) => {
 
   return (
     <div>
+      <Grid textAlign='center'
+      style={{ height: '100%' }} verticalAlign="middle">
+      <Grid.Column style={{ maxWidth: 450 }}>
       <Segment.Group compact>
-      <Segment compact>
+      <Segment compact stacked className="authForm">
       <Form onSubmit={handleSubmit} name={name}>
         <Form.Field>
           <label htmlFor="email">Email Address</label>
@@ -24,12 +27,10 @@ const AuthForm = (props) => {
           <label>Password</label>
           <input placeholder="Password" name="password" type="password"/>
         </Form.Field>
-        <Divider horizontal />
         <Form.Field>
           <Checkbox label="I agree to the Terms and Conditions" />
         </Form.Field>
-        <Button type="submit">{displayName}</Button>
-        <Divider horizontal />
+        <Button color="blue" type="submit">{displayName}</Button>
         {error && error.response &&
         <div>
         <Message negative>
@@ -37,15 +38,17 @@ const AuthForm = (props) => {
         </Message>
         </div>}
       </Form>
-      </Segment>
-      <Segment>
-        <Link to="/auth/google">
+      <Divider></Divider>
+        <Link to="/auth/google" traget="_self">
           <Button color='google plus'>
           <Icon name='google plus' /> Login with Google
           </Button>
         </Link>
       </Segment>
       </Segment.Group>
+      </Grid.Column>
+
+      </Grid>
     </div>
   )
 }
