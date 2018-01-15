@@ -20,14 +20,14 @@ class Products extends Component {
   // }
 
   render() {
-    const { products, displayName } = this.props;
+    const { products, displayName, user } = this.props;
     return (
       <div>
         {/* {this.user && this.user.isAdmin &&  */}
-        <Segment>
+        {user.role === 'admin' && <Segment>
           <Button as={Link} to="/products/add" floated="right">Add a new product</Button>
           <Divider horizontal>Admin Only</Divider>
-        </Segment>
+        </Segment>}
         <h1>{displayName}</h1>
         {products.length > 0 && (
           <Item.Group divided>
@@ -55,7 +55,8 @@ class Products extends Component {
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapAllProductsState = ({ products }) => ({
+const mapAllProductsState = ({ user, products }) => ({
+  user,
   products,
   displayName: 'All Products',
 });

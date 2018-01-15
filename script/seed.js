@@ -95,7 +95,8 @@ async function seed () {
     Order.create({
       total: 15,
       orderedAt: Date.now(),
-      status: 'CREATED'
+      status: 'CREATED',
+      email: 'cody@email.com',
     })
     .then(order => {
       order.setUser(1);
@@ -103,7 +104,8 @@ async function seed () {
     Order.create({
       total: 100.25,
       orderedAt: Date.now(),
-      status: 'PROCESSING'
+      status: 'PROCESSING',
+      email: 'cody@email.com',
     })
     .then(order => {
       order.setUser(1);
@@ -111,7 +113,8 @@ async function seed () {
     Order.create({
       total: 1337.88,
       orderedAt: Date.now(),
-      status: 'COMPLETED'
+      status: 'COMPLETED',
+      email: 'murphy@email.com',
     })
     .then(order => {
       order.setUser(2);

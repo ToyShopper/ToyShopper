@@ -103,6 +103,10 @@ class ProductDetail extends Component {
     const { product, reviews, user } = this.props;
     return (
       <div>
+        {user.role === 'admin' && <Segment>
+          <Button as={Link} to={'/products/' + product.id + '/edit'} floated="right">Edit this product</Button>
+          <Divider horizontal>Admin Only</Divider>
+        </Segment>}
         {product.id && (
           <Segment>
             <Item>
@@ -126,11 +130,6 @@ class ProductDetail extends Component {
           </div>)}
           {user.id && this.renderAddReviewForm()}
         </Comment.Group>
-        {/* {this.user && this.user.isAdmin &&  */}
-        {user.role === 'admin' && <Segment>
-          <Button as={Link} to={'/products/' + product.id + '/edit'} floated="right">Edit this product</Button>
-          <Divider horizontal>Admin Only</Divider>
-        </Segment>}
       </div>)
   }
 }
