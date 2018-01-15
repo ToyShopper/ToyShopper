@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchOrders, fetchOrdersByStatus } from '../store/orders';
+import { fetchOrders, fetchOrdersByStatus, fetchOrdersByUser } from '../store/orders';
 import { fetchStatuses } from '../store/statuses';
 import { Item, Dropdown, Segment } from 'semantic-ui-react';
 
@@ -76,4 +76,12 @@ const mapDispatch = dispatch => ({
   onFilterClick: (event, data) => dispatch(fetchOrdersByStatus(data.text))
 })
 
-export default connect(mapState, mapDispatch)(Orders)
+const mapUserDispatch = (dispatch, ownProps) => ({
+  loadOrders: () => dispatch(fetchOrdersByUser(ownProps.match.params.id)),
+  loadStatuses: () => dispatch(fetchStatuses()),
+  onFilterClick: (event, data) => dispatch(fetchOrdersByStatus(data.text))
+})
+
+export const AllOrders = connect(mapState, mapDispatch)(Orders)
+export const UserOrders = connect(mapState, mapUserDispatch)(Orders)
+
