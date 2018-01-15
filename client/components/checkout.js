@@ -94,7 +94,7 @@ class Checkout extends Component {
         </Item>
         <Item.Content>
           <Item.Header as="h3">{item.title}</Item.Header>
-          <Item.Description as="h4">Price: ${item.price}</Item.Description>
+          <Item.Description as="h4">Price: ${Number(item.price).toFixed(2)}</Item.Description>
           <Item.Description as="h4">Quantity: {item.quantity}</Item.Description>
         </Item.Content>
       </Item>
