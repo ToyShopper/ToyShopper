@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const { Product } = require('../db/models');
 const { Review } = require('../db/models');
+const { User } = require('../db/models');
+const { Category } = require('../db/models');
 
 module.exports = router;
 
@@ -8,6 +10,7 @@ router.get('/', (req, res, next) => {
   Product.findAll({
     // explicitly select only the columns needed
     where: { quantity: { $gt: 0 } },
+    include: [{ model: Category }],
     attributes: ['id', 'title', 'price', 'imageURL', 'secondaryImages'],
   })
     .then(products => res.json(products))
@@ -15,8 +18,8 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  Product.create(req.body)
-  .then(product => res.json(product));
+  Product.create(req.body).then(product => res.json(product))
+  .catch(next);
 });
 
 router.get('/search/:keyword', (req, res, next) => {
@@ -57,9 +60,8 @@ function findAverageRating(product) {
 }
 
 router.put('/:id', (req, res, next) => {
-  Product.findById(req.params.id)
-  .then(product => {
-    product.update(req.body)
-    .then(newProduct => res.json(newProduct));
+  Product.findById(req.params.id).then(product => {
+    product.update(req.body).then(newProduct => res.json(newProduct))
+    .catch(next);
   });
 });
