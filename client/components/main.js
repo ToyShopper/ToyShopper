@@ -13,7 +13,7 @@ import { Container, Menu, Image } from 'semantic-ui-react'
  *  rendered out by the component's `children`.
  */
 const Main = (props) => {
-  const { children, handleClick, isLoggedIn } = props
+  const { children, handleClick, isLoggedIn, isAdmin } = props
 
   return (
     <div>
@@ -25,8 +25,8 @@ const Main = (props) => {
           </Menu.Item>
           <Menu.Item as={Link} to="/products">Products</Menu.Item>
           <Menu.Item as={Link} to="/cart">Cart</Menu.Item>
-          <Menu.Item as={Link} to="/users">Users</Menu.Item>
           <Menu.Item as={Link} to="/orders">Orders</Menu.Item>
+          {isAdmin && <Menu.Item as={Link} to="/users">Users</Menu.Item>}
           <div className="right menu">
             <Menu.Item>
               <SearchBar />
@@ -58,6 +58,7 @@ const Main = (props) => {
  */
 const mapState = (state) => {
   return {
+    isAdmin: state.user && state.user.role === 'admin',
     isLoggedIn: !!state.user.id
   }
 }

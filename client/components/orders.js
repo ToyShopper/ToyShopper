@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchOrders, fetchOrdersByStatus } from '../store/orders';
 import { fetchStatuses } from '../store/statuses';
-import { Item, Dropdown, Input } from 'semantic-ui-react';
+import { Item, Dropdown, Segment } from 'semantic-ui-react';
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -23,12 +23,13 @@ class Orders extends Component {
           <Item.Description>Order Status: {order.status}</Item.Description>
           <Item.Description>Order Total: $ {Number(order.total).toFixed(2)}</Item.Description>
         </Item.Content>
-        {order.user &&
-        (<Item.Content>
+        <Item.Content>
           <Item.Header>User</Item.Header>
-          <Item.Description>{order.user.fullName}</Item.Description>
-        </Item.Content>)
-        }
+          <Item.Description>
+            {order.user ? order.user.fullName : ''}
+          </Item.Description>
+          < Item.Meta >{order.email}</Item.Meta>
+        </Item.Content>
       </Item>
     )
   }
@@ -41,13 +42,14 @@ class Orders extends Component {
 
     return (
       <div>
+        <h1>Orders</h1>
         <Dropdown text='Filter Orders' icon='filter' floating labeled button className='icon'>
           <Dropdown.Menu>
             <Dropdown.Header icon='tags' content='Categories' />
             <Dropdown.Menu scrolling>
               {statusArr.map(status => {
                 return (
-                  <Dropdown.Item key={status} text={status} onClick={onFilterClick}/>
+                  <Dropdown.Item key={status} text={status} onClick={onFilterClick} />
                 )
               })}
               <Dropdown.Item text="ALL" onClick={loadOrders} />
@@ -55,10 +57,11 @@ class Orders extends Component {
           </Dropdown.Menu>
         </Dropdown>
         {orders.length > 0 &&
-
-          <Item.Group divided>
-            {orders.map(order => this.renderOrder(order))}
-          </Item.Group>
+          <Segment raised>
+            <Item.Group divided>
+              {orders.map(order => this.renderOrder(order))}
+            </Item.Group>
+          </Segment>
         }
       </div>
     )
