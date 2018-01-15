@@ -49,6 +49,24 @@ router.get('/:id', (req, res, next) => {
     .catch(next);
 });
 
+router.get('/users/:id', (req, res, next) => {
+  Order.findAll({
+    where: {
+      userId: req.params.id,
+    },
+    include: [
+      {
+        model: OrderItem,
+        attributes: ['id', 'quantity', 'priceAtOrder', 'productId'],
+        include: [Product],
+      },
+      { model: User, attributes: ['id', 'email', 'firstName', 'lastName'] },
+    ],
+  })
+    .then(order => res.json(order))
+    .catch(next);
+});
+
 router.post('/', (req, res, next) => {
   // 1. get the current user. create a user with the given email address if not exists (for now, we will skip this part)
   // 2. create a new order with given user id (for now, we will leave user id blank)

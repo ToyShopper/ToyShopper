@@ -8,7 +8,7 @@ import {Main, Login, Signup, UserHome,
   ProductDetail, AddProductForm, EditProductForm,
   Cart, Checkout,
   UserList, UserDetail,
-  Orders, Order} from './components'
+  Orders, Order, AllOrders, UserOrders } from './components'
 import {me} from './store'
 
 /**
@@ -42,8 +42,9 @@ class Routes extends Component {
 
             <Route path="/cart" component={Cart} />
             <Route path="/checkout" component={Checkout} />
+            <Route path="/orders/users/:id" component={UserOrders} />
             <Route path="/orders/:id" component={Order} />
-            <Route path="/orders/" component={Orders} />
+            <Route path="/orders/" component={AllOrders} />
             {
               isLoggedIn &&
                 <Switch>
