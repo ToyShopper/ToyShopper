@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchOrders, fetchOrdersByStatus, fetchOrdersByUser } from '../store/orders';
+import { fetchOrders, fetchOrdersByStatus, fetchOrdersByUser, fetchOrdersByUserAndStatus } from '../store/orders';
 import { fetchStatuses } from '../store/statuses';
 import { Item, Dropdown, Segment, Label } from 'semantic-ui-react';
 
@@ -88,7 +88,7 @@ const mapAllOrdersDispatch = dispatch => ({
 const mapMyOrdersDispatch = (dispatch, ownProps) => ({
   loadOrders: () => dispatch(fetchOrdersByUser(ownProps.match.params.id)),
   loadStatuses: () => dispatch(fetchStatuses()),
-  onFilterClick: (event, data) => dispatch(fetchOrdersByStatus(data.text))
+  onFilterClick: (event, data) => dispatch(fetchOrdersByUserAndStatus(ownProps.match.params.id, data.text))
 });
 
 export const AllOrders = connect(mapAllOrdersState, mapAllOrdersDispatch)(Orders);

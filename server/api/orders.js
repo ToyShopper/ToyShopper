@@ -50,10 +50,14 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.get('/users/:id', (req, res, next) => {
+  let whereStatement = {
+    userId: req.params.id
+  };
+  if (req.query.status) {
+    whereStatement.status = req.query.status;
+  }
   Order.findAll({
-    where: {
-      userId: req.params.id,
-    },
+    where: whereStatement,
     include: [
       {
         model: OrderItem,
