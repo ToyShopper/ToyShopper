@@ -16,5 +16,7 @@ export {default as Checkout} from './checkout'
 export {AllOrders, UserOrders} from './orders'
 export {default as Order} from './order'
 export {AddProductForm, EditProductForm} from './product-form'
+export {default as ForgotPassForm} from './forgot'
+
 export {default as SearchBar} from './search-bar'
 
