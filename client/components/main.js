@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { logout } from '../store'
-import { Container, Menu } from 'semantic-ui-react'
+import {SearchBar} from './index'
+import { Container, Menu, Image } from 'semantic-ui-react'
 
 /**
  * COMPONENT
@@ -16,15 +17,21 @@ const Main = (props) => {
 
   return (
     <div>
-      <Menu as="nav" fixed="top" size="large" inverted>
+      <Menu fixed="top" size="large" inverted>
         <Container>
-          <Menu.Item as={Link} to="/home" header>Toy Shopper</Menu.Item>
-          <Menu.Item as={Link} to="/home">Home</Menu.Item>
+          <Menu.Item as={Link} to="/home" header>
+            <Image size="mini" src="/logo.png" style={{ marginRight: '1.5em' }} />
+              Toy Shopper
+          </Menu.Item>
           <Menu.Item as={Link} to="/products">Products</Menu.Item>
           <Menu.Item as={Link} to="/cart">Cart</Menu.Item>
           <Menu.Item as={Link} to="/users">Users</Menu.Item>
           <Menu.Item as={Link} to="/orders">Orders</Menu.Item>
-
+          <div className="right menu">
+            <Menu.Item>
+              <SearchBar />
+            </Menu.Item>
+          </div>
           {
             isLoggedIn
               ? <div className="right menu">

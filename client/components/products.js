@@ -15,8 +15,12 @@ class Products extends Component {
     this.props.loadProducts();
   }
 
+  // componentWillReceiveProps() {
+  //   this.props.loadProducts();
+  // }
+
   render() {
-    const { products } = this.props;
+    const { products, displayName } = this.props;
     return (
       <div>
         {/* {this.user && this.user.isAdmin &&  */}
@@ -24,11 +28,7 @@ class Products extends Component {
           <Button as={Link} to="/products/add" floated="right">Add a new product</Button>
           <Divider horizontal>Admin Only</Divider>
         </Segment>
-        {this.props.match ? (
-          <h1>All {this.props.match.params.category} Products </h1>
-        ) : (
-            <h1>All Products</h1>
-          )}
+        <h1>{displayName}</h1>
         {products.length > 0 && (
           <Item.Group divided>
             {products.map(product => (
@@ -52,7 +52,18 @@ class Products extends Component {
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapState = ({ products }) => ({ products });
+const mapAllProductsState = ({ products }) => ({
+  products,
+  displayName: 'All Products',
+});
+const mapProductsByCategoryState = ({ products }, ownProps) => ({
+  products,
+  displayName: 'All ' + ownProps.match.params.category + ' Products',
+});
+const mapProductsBySearchState = ({ products }, ownProps) => ({
+  products,
+  displayName: 'All Products with Keyword - ' + ownProps.match.params.keyword,
+});
 
 const mapAllDispatch = dispatch => ({
   loadProducts: () => dispatch(fetchProducts()),
@@ -66,8 +77,8 @@ const mapSearchDispatch = (dispatch, ownProps) => ({
     dispatch(fetchProductsBySearch(ownProps.match.params.keyword)),
 });
 
-export const AllProducts = connect(mapState, mapAllDispatch)(Products);
-export const ProductsByCategory = connect(mapState, mapFilteredDispatch)(
+export const AllProducts = connect(mapAllProductsState, mapAllDispatch)(Products);
+export const ProductsByCategory = connect(mapProductsByCategoryState, mapFilteredDispatch)(
   Products,
 );
-export const ProductsBySearch = connect(mapState, mapSearchDispatch)(Products);
+export const ProductsBySearch = connect(mapProductsBySearchState, mapSearchDispatch)(Products);
