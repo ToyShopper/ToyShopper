@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { fetchProductDetail } from '../store/product';
 import { addToCart } from '../store/cart';
 import { fetchReviewsForProduct, addReview } from '../store/reviews';
-import { Item, Comment, Form, Header, Rating, Segment, Button, Divider } from 'semantic-ui-react'
+import { Item, Comment, Form, Header, Rating, Segment, Button, Divider, Label } from 'semantic-ui-react'
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -114,8 +114,14 @@ class ProductDetail extends Component {
               <Item.Content>
                 <Item.Image size="large" src={product.imageURL} />
                 <Item.Extra as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Extra>
+                <Item.Extra>
+                  {product.categories ? product.categories.map(category => (
+                    <Label key={category.id} as={Link} to={'/categories/' + category.name} tag>
+                      {category.name}
+                    </Label>)) : null}
+                </Item.Extra>
                 <Item.Meta as="h4">Item Description</Item.Meta>
-                <Item.Description as="p">{product.description}</Item.Description>
+                <Item.Description as="pre">{product.description}</Item.Description>
                 <Form name="quantity" onSubmit={(event) => this.handleQuantitySubmit(event, product)}>
                   <Form.Input id="quantity" label="Quantity" value={this.state.quantity} onChange={this.handleChange('quantity')} action={{ labelPosition: 'left', icon: 'add to cart', content: 'Add to Cart' }} />
                 </Form>
