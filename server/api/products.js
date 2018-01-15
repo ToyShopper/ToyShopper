@@ -59,22 +59,6 @@ function findAverageRating(product) {
   }
 }
 
-router.get('/:id/reviews', (req, res, next) => {
-  Review.findAll({
-    where: {
-      productId: req.params.id,
-    },
-    include: [
-      {
-        model: User,
-        attributes: ['firstName', 'lastName'],
-      },
-    ],
-  })
-    .then(reviews => res.json(reviews))
-    .catch(next);
-});
-
 router.put('/:id', (req, res, next) => {
   Product.findById(req.params.id).then(product => {
     product.update(req.body).then(newProduct => res.json(newProduct))
