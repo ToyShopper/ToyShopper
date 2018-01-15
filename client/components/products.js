@@ -38,7 +38,10 @@ class Products extends Component {
                   <Item.Header as={Link} to={'/products/' + product.id}>{product.title}</Item.Header>
                   <Item.Description>Price: ${product.price}</Item.Description>
                   <Item.Extra>
-                    <Label>{'Category: ' + product.CategoryId}</Label>
+                    {product.categories ? product.categories.map(category => (
+                    <Label key={category.id} as={Link} to={'/categories/' + category.name}>
+                    {category.name}
+                    </Label>)) : null}
                   </Item.Extra>
                 </Item.Content>
               </Item>
