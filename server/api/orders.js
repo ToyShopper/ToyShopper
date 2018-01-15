@@ -57,6 +57,7 @@ router.post('/', (req, res, next) => {
   // 3. create order items using the order id above and given product ids
   // 4. empty the shopping cart
   const newOrder = req.body;
+  newOrder.user = req.user;
   Order.create(newOrder, { include: [OrderItem] })
     .then(order => {
       req.session.cart = { items: {}, total: 0 };

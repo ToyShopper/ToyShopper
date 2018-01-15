@@ -9,7 +9,7 @@ import { Item, Form, Segment } from 'semantic-ui-react'
 class Checkout extends Component {
   constructor(props) {
     super(props);
-
+    this.state = Object.assign({}, props.initialValue);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -28,16 +28,32 @@ class Checkout extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { cart, confirm } = this.props;
-    let orderItems = Object.keys(cart.items).map(itemId => cart.items[itemId])
+    const { cart, confirm, user } = this.props;
+    const {email, ...address} = this.state;
+    const orderItems = Object.keys(cart.items).map(itemId => cart.items[itemId])
       .map(item => ({ productId: item.id, quantity: item.quantity, priceAtOrder: item.price }));
     const newOrder = {
       order_items: orderItems,
-      status: 'BEING PREPARED',
+      status: 'CREATED',
       total: cart.total,
       orderedAt: Date.now(),
-    }
+      email: email,
+      address: address,
+      userId: user.id,
+    };
     confirm(newOrder);
+  }
+
+  renderInputField({ name, label }) {
+    return (name &&
+      <Form.Group key={name} widths={1}>
+        <Form.Input
+          name={name} label={label}
+          placeholder={label} value={this.state[name]}
+          onChange={this.handleChange(name)}
+        />
+      </Form.Group>
+    );
   }
 
   renderItem(item) {
@@ -55,8 +71,16 @@ class Checkout extends Component {
     )
   }
 
+  renderAddressForm(fields) {
+    return (
+      <Form.Group width={1}>
+        {fields && fields.map(field => this.renderInputField(field))}
+      </Form.Group>
+    );
+  }
+
   render() {
-    const { cart } = this.props;
+    const { cart, fields } = this.props;
     return (
       <div>
         <h1>Checkout</h1>
@@ -68,17 +92,34 @@ class Checkout extends Component {
           </Item.Group>
         </Segment>
         <h3>Total: ${cart.total}</h3>
+        <Segment raised>
         <Form onSubmit={this.handleSubmit}>
+          {this.renderAddressForm(fields)}
+          <Form.Group>
           <Form.Button positive>Confirm Your Order</Form.Button>
+          </Form.Group>
         </Form>
+        </Segment>
       </div>
     );
   }
 }
 
 /* -----------------    CONTAINER     ------------------ */
-
-const mapState = ({ cart }) => ({ cart });
+const fields = [
+  { name: 'streetAddress', label: 'Street Address' },
+  { name: 'city', label: 'City' },
+  { name: 'state', label: 'State'},
+  { name: 'zipCode', label: 'Zip Code' },
+  { name: 'email', label: 'Email'},
+];
+const initialValue = {
+  streetAddress: '',
+  city: '',
+  state: '',
+  zipCode: '',
+}
+const mapState = state => ({ cart: state.cart, user: state.user, fields: fields, initialValue });
 
 const mapDispatch = dispatch => ({
   loadCart: () => dispatch(fetchCart()),
