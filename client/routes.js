@@ -30,10 +30,10 @@ class Routes extends Component {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/categories/:category" component={ProductsByCategory} />
-            <Route path="/products/search/:keyword" component={ProductsBySearch} />
-            <Route path="/products/add" component={AddProductForm} />
-            <Route path="/products/:id/edit" component={EditProductForm} />
-            <Route path="/products/:id" component={ProductDetail} />
+            <Route exact path="/products/search/:keyword" component={ProductsBySearch} />
+            <Route exact path="/products/add" component={AddProductForm} />
+            <Route exact path="/products/:id/edit" component={EditProductForm} />
+            <Route exact path="/products/:id" component={ProductDetail} />
             <Route exact path="/products" component={AllProducts} />
 
 
