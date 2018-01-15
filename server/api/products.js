@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const { Product } = require('../db/models');
 const { Review } = require('../db/models');
-const { User } = require('../db/models');
 
 module.exports = router;
 
@@ -56,22 +55,6 @@ function findAverageRating(product) {
         .reduce((sum, rating) => sum + rating) / reviews.length;
   }
 }
-
-router.get('/:id/reviews', (req, res, next) => {
-  Review.findAll({
-    where: {
-      productId: req.params.id,
-    },
-    include: [
-      {
-        model: User,
-        attributes: ['firstName', 'lastName'],
-      },
-    ],
-  })
-    .then(reviews => res.json(reviews))
-    .catch(next);
-});
 
 router.put('/:id', (req, res, next) => {
   Product.findById(req.params.id)
