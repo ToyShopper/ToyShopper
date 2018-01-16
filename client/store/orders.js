@@ -8,6 +8,7 @@ const GET_ORDERS = 'GET_ORDERS';
 const CONFIRM_NEW_ORDER = 'CONFIRM_NEW_ORDER';
 const FILTER_ORDERS = 'FILTER_ORDERS';
 const SEND_CONFIRMATION_EMAIL = 'SEND_CONFIRMATION_EMAIL';
+const SEND_PASSWORD_RESET_EMAIL = 'SEND_PASSWORD_RESET_EMAIL';
 
 /**
  * ACTION CREATORS
@@ -43,6 +44,11 @@ export const sendConfirmationEmail = (email) => dispatch =>
   axios.post('/api/mail/', email)
     .then(res => dispatch({type: SEND_CONFIRMATION_EMAIL, action: res.data}))
     .catch(err => console.log(err));
+
+export const sendPasswordResetEmail = (email) => dispatch =>
+    axios.post('/api/forgot/', email)
+      .then(res => dispatch({type: SEND_PASSWORD_RESET_EMAIL, action: res.data}))
+      .catch(err => console.log(err));
 
 export const fetchOrdersByStatus = status => dispatch =>
     axios.get('/api/orders/?status=' + status)

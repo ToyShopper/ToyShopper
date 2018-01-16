@@ -8,6 +8,7 @@ router.use('/categories', require('./categories'));
 router.use('/orders', require('./orders'));
 router.use('/reviews', require('./reviews'));
 router.use('/mail', require('./mail'));
+router.use('/forgot', require('./forgot'));
 
 router.use((req, res, next) => {
   const error = new Error('Not Found');

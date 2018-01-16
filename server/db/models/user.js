@@ -45,18 +45,18 @@ const User = db.define('user', {
   role: {
     type: Sequelize.ENUM('admin', 'user')
   },
+  resetPasswordToken: {
+    type: Sequelize.STRING
+  },
+  resetPasswordExpires: {
+    type: Sequelize.DATE
+  },
   fullName: {
     type: Sequelize.VIRTUAL,
     get() {
       return this.getDataValue('firstName') + ' ' + this.getDataValue('lastName');
     }
-  }// this would output full address, but it mess up eager loading on api/id/reviews,
-  // address: {
-  //   type: Sequelize.VIRTUAL,
-  //   get() {
-  //     return this.getDataValue('streetAddress') + '\n' + this.getDataValue('city') + ', ' + this.getDataValue('state') + ' ' + this.getDataValue('zipCode');
-  //   }
-  // }
+  }
 });
 
 module.exports = User;
