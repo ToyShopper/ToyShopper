@@ -1,20 +1,37 @@
 import React, { Component } from 'react'
-import { Button, Form, Divider, Segment, Message, Icon, Grid, Container } from 'semantic-ui-react'
+import { Button, Form, Divider, Segment, Message, Icon, Input, Container, Label } from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import {sendPasswordResetConfirmationEmail } from '../store/orders';
+import { ToastContainer } from 'react-toastr/lib/components/ToastContainer';
 
 class ResetPassForm extends Component {
 
-  render() {
+  renderMessage(title, message) {
     return (
-      <Container>
+      <Message>
+        <Message.Header>{title}</Message.Header>
+        {message}
+      </Message>
+    )
+  }
+
+  render() {
+    let container;
+    return (
+    <Container>
       <h1>Reset Password</h1>
     <Divider />
-    <Segment >
+    <Segment color="grey">
+    <ToastContainer
+      ref={ref => container = ref}
+      className="toast-top-right" />
     <Form onSubmit={this.props.handleSubmit} name="resetPassword">
       <Form.Field>
-        <label htmlFor="password">New Password</label>
-        <input placeholder="New Password" name="password" />
+        <Input placeholder="New Password" name="password" iconPosition="left" icon="lock"/>
+      </Form.Field>
+      <br/>
+      <Form.Field>
+        <Input placeholder="Confirm Password" name="confirmPassword" iconPosition="left" icon="lock"/>
       </Form.Field>
       <br/>
       <Button color="blue" type="submit">Reset Password</Button>
@@ -28,9 +45,13 @@ class ResetPassForm extends Component {
 const mapDispatch = (dispatch, ownProps) => ({
   handleSubmit: (evt) => {
     evt.preventDefault();
-    const password = evt.target.password.value;
-    console.log('handle submit', password, ownProps.match.params.token)
-    return dispatch(sendPasswordResetConfirmationEmail({password}, ownProps.match.params.token))
+    if (evt.target.password.value === evt.target.confirmPassword.value) {
+      const password = evt.target.password.value;
+      return dispatch(sendPasswordResetConfirmationEmail({password}, ownProps.match.params.token))
+    }
+    else {
+
+    }
   }
 })
 
