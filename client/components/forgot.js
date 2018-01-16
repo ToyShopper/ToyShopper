@@ -5,12 +5,18 @@ import PropTypes from 'prop-types'
 import {auth} from '../store'
 import { Button, Checkbox, Form, Divider, Segment, Message, Icon, Grid, Container } from 'semantic-ui-react'
 import {sendPasswordResetEmail } from '../store/orders';
+import { ToastContainer } from "react-toastr";
 
 class ForgotPassForm extends Component {
 
   render() {
+    let container;
     return (
-      <Container>
+      <Container className="container">
+      <ToastContainer
+    ref={ref => container = ref}
+    className="toast-top-right"
+  />
       <h1>Forgot Password</h1>
     <Divider />
     <Segment >
@@ -22,6 +28,15 @@ class ForgotPassForm extends Component {
       <br/>
       <Button color="blue" type="submit">Reset Password</Button>
       </Form>
+      <button
+      className="primary"
+      onClick={() =>
+        container.success((<Message>{`hi! Now is ${new Date()} ///title\\\\\\` }</Message>),{
+        })
+      }
+    >
+      Hello
+    </button>
     </Segment>
     </Container>
     )
