@@ -11,6 +11,7 @@ const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
+const flash = require('express-flash')
 
 module.exports = app
 
@@ -51,6 +52,7 @@ const createApp = () => {
   }))
   app.use(passport.initialize())
   app.use(passport.session())
+  app.use(flash());
 
   // auth and api routes
   app.use('/auth', require('./auth'))
