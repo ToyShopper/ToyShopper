@@ -8,7 +8,8 @@ import {Main, Login, Signup, UserHome,
   ProductDetail, AddProductForm, EditProductForm,
   Cart, Checkout,
   UserList, UserDetail,
-  OrderDetail, AllOrders, MyOrders, ForgotPassForm } from './components'
+  OrderDetail, AllOrders, MyOrders,
+  ForgotPassForm, ResetPassForm } from './components'
 import {me} from './store'
 
 /**
@@ -29,22 +30,17 @@ class Routes extends Component {
             {/* Routes placed here are available to all visitors */}
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-<<<<<<< HEAD
             <Route path="/forgot" component={ForgotPassForm} />
+            <Route path="/reset/:token" component={ResetPassForm} />
             <Route path="/categories/:category" component={ProductsByCategory} />
-=======
             <Route path="/categories/:category/products" component={ProductsByCategory} />
->>>>>>> 3469ec55a520462144e4dbb2b4f54c36ee30fd12
             <Route exact path="/products/search/:keyword" component={ProductsBySearch} />
             <Route exact path="/products/add" component={AddProductForm} />
             <Route exact path="/products/:id/edit" component={EditProductForm} />
             <Route exact path="/products/:id" component={ProductDetail} />
             <Route exact path="/products" component={AllProducts} />
-
-
             <Route path="/users/:id" component={UserDetail} />
             <Route path ="/users" component={UserList} />
-
             <Route path="/cart" component={Cart} />
             <Route path="/checkout" component={Checkout} />
             <Route path="/orders/users/:id" component={MyOrders} />

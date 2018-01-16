@@ -17,6 +17,6 @@ export {AllOrders, MyOrders} from './orders'
 export {default as OrderDetail} from './order-detail'
 export {AddProductForm, EditProductForm} from './product-form'
 export {default as ForgotPassForm} from './forgot'
-
+export {default as ResetPassForm} from './reset'
 export {default as SearchBar} from './search-bar'
 

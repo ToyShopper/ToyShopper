@@ -21,14 +21,13 @@ router.post('/', (req, res, next) => {
     }
   })
   .then((user) => {
-    console.log(user)
+    if (!user) {
+      req.flash('error', 'No account with that email address exists.');
+      return res.redirect('/forgot');
+    }
     user.resetPasswordToken = token.toString();
     user.resetPasswordExpires = Date.now() + 3600000;
     user.save();
-    return user;
-  })
-  .then(user => {
-    console.log('hits spread', user)
     const mailOptions = {
       to: user.email,
       from: process.env.MAILER_GMAIL_ADDRESS,
@@ -37,7 +36,6 @@ router.post('/', (req, res, next) => {
       'http://' + req.headers.host + '/reset/' + token + '\n\n' +
       'If you did not request this, please ignore this email and your password will remain unchanged.\n'
     };
-    console.log('mailoptions', mailOptions)
     transporter.sendMail(mailOptions);
   })
   .catch(err => console.log(err));
