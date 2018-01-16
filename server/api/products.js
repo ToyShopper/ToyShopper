@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const { Product } = require('../db/models');
 const { Review } = require('../db/models');
-const { User } = require('../db/models');
 const { Category } = require('../db/models');
 
 module.exports = router;
@@ -79,86 +78,42 @@ router.put('/:id', (req, res, next) => {
     .catch(next);
 });
 
-// Category.findOne({
-//   where: {
-//     name: req.body.categoryName,
-//   },
-// }).then(category => {
-//   return Product.findOne({
-//     where: {
-//       id: req.params.id,
-//     },
-//     include: [{ model: Category }],
-//   })
-//     .then(product => {
-//       product
-//         .addCategory(category)
-//         .then(updatedProduct => {
-//           return updatedProduct;
-//         })
-//         res.json(product)
-//     })
-//     .catch(next);
-// });
-
-//TO-DO: find cleaner way to accomplish this
-router.put('/addCategory/:id', (req, res, next) => {
+router.post('/:id/categories', (req, res, next) => {
   Category.findOne({
     where: {
-      name: req.body.categoryName,
+      name: req.body.name,
     },
   })
     .then(category => {
-      Product.findOne({
-        where: {
-          id: req.params.id,
-        },
-      }).then(product => {
-        product
-          .addCategory(category)
-          .then(() => {
-            return Product.findOne({
-              where: {
-                id: req.params.id,
-              },
-              include: [{ model: Category }],
-            });
-          })
-          .then(newProduct => {
-            res.json(newProduct);
+      if (!category) {
+        Category.create(req.body).then(newCategory => {
+          Product.findById(req.params.id).then(product => {
+            product.addCategory(newCategory);
           });
-      });
+        });
+      } else {
+        Product.findById(req.params.id).then(product => {
+          product.addCategory(category);
+        });
+      }
+    })
+    .then(() => {
+      res.status(201).end();
     })
     .catch(next);
 });
 
-//TO-DO: find cleaner way to accomplish this
-router.put('/removeCategory/:id', (req, res, next) => {
-  Category.findOne({
-    where: {
-      name: req.body.categoryName,
-    },
-  })
-    .then(category => {
-      Product.findOne({
+router.delete('/:id/categories', (req, res, next) => {
+  Product.findById(req.params.id)
+    .then(product => {
+      Category.findOne({
         where: {
-          id: req.params.id,
+          name: req.body.name,
         },
-      }).then(product => {
-        product
-          .removeCategory(category)
-          .then(() => {
-            return Product.findOne({
-              where: {
-                id: req.params.id,
-              },
-              include: [{ model: Category }],
-            });
-          })
-          .then(newProduct => {
-            res.json(newProduct);
-          });
+      }).then(category => {
+        product.removeCategory(category.id);
       });
     })
+    .then(() => res.status(204).end())
     .catch(next);
 });
