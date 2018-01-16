@@ -18,8 +18,9 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  Product.create(req.body).then(product => res.json(product))
-  .catch(next);
+  Product.create(req.body)
+    .then(product => res.json(product))
+    .catch(next);
 });
 
 router.get('/search/:keyword', (req, res, next) => {
@@ -43,9 +44,14 @@ router.get('/:id', (req, res, next) => {
       {
         model: Review,
       },
+      {
+        model: Category,
+      },
     ],
   })
-    .then(product => res.json(product))
+    .then(product => {
+      res.json(product);
+    })
     .catch(next);
 });
 
@@ -60,8 +66,99 @@ function findAverageRating(product) {
 }
 
 router.put('/:id', (req, res, next) => {
-  Product.findById(req.params.id).then(product => {
-    product.update(req.body).then(newProduct => res.json(newProduct))
+  Product.findOne({
+    where: {
+      id: req.params.id,
+    },
+    include: [{ model: Category }],
+  })
+    .then(product => {
+      product.update(req.body);
+      res.json(product);
+    })
     .catch(next);
-  });
+});
+
+// Category.findOne({
+//   where: {
+//     name: req.body.categoryName,
+//   },
+// }).then(category => {
+//   return Product.findOne({
+//     where: {
+//       id: req.params.id,
+//     },
+//     include: [{ model: Category }],
+//   })
+//     .then(product => {
+//       product
+//         .addCategory(category)
+//         .then(updatedProduct => {
+//           return updatedProduct;
+//         })
+//         res.json(product)
+//     })
+//     .catch(next);
+// });
+
+//TO-DO: find cleaner way to accomplish this
+router.put('/addCategory/:id', (req, res, next) => {
+  Category.findOne({
+    where: {
+      name: req.body.categoryName,
+    },
+  })
+    .then(category => {
+      Product.findOne({
+        where: {
+          id: req.params.id,
+        },
+      }).then(product => {
+        product
+          .addCategory(category)
+          .then(() => {
+            return Product.findOne({
+              where: {
+                id: req.params.id,
+              },
+              include: [{ model: Category }],
+            });
+          })
+          .then(newProduct => {
+            res.json(newProduct);
+          });
+      });
+    })
+    .catch(next);
+});
+
+//TO-DO: find cleaner way to accomplish this
+router.put('/removeCategory/:id', (req, res, next) => {
+  Category.findOne({
+    where: {
+      name: req.body.categoryName,
+    },
+  })
+    .then(category => {
+      Product.findOne({
+        where: {
+          id: req.params.id,
+        },
+      }).then(product => {
+        product
+          .removeCategory(category)
+          .then(() => {
+            return Product.findOne({
+              where: {
+                id: req.params.id,
+              },
+              include: [{ model: Category }],
+            });
+          })
+          .then(newProduct => {
+            res.json(newProduct);
+          });
+      });
+    })
+    .catch(next);
 });
