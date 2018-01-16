@@ -2,8 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {auth} from '../store'
-import { Button, Checkbox, Form, Divider, Segment, Message, Icon, Grid } from 'semantic-ui-react'
+import {auth, authLogin} from '../store'
+import { Button, Checkbox, Form, Divider, Segment, Message, Icon, Grid, Input } from 'semantic-ui-react'
 
 /**
  * COMPONENT
@@ -17,19 +17,28 @@ const AuthForm = (props) => {
       style={{ height: '100%' }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
       <Segment.Group compact>
-      <Segment compact stacked className="authForm">
+      <Segment compact color="grey" className="authForm">
       <Form onSubmit={handleSubmit} name={name}>
+      <Form.Group>
         <Form.Field>
-          <label htmlFor="email">Email Address</label>
-          <input placeholder="Email Address" name="email" />
+          <Input placeholder="Email Address" name="email" />
         </Form.Field>
         <Form.Field>
-          <label>Password</label>
-          <input placeholder="Password" name="password" type="password"/>
+          <Input icon="lock" iconPosition="left" placeholder="Password" name="password" type="password"/>
         </Form.Field>
-        <Form.Field>
-          <Checkbox label="I agree to the Terms and Conditions" />
+        </Form.Group>
+        { (name === 'signup') &&
+        <Form.Group>
+
+          <Form.Field>
+            <Input placeholder="First Name" name="firstName" />
+          </Form.Field>
+          <Form.Field>
+          <Input placeholder="Last Name" name="lastName" />
         </Form.Field>
+        </Form.Group>
+        }
+        <Checkbox label="I agree to the Terms and Conditions" />
         <Button color="blue" type="submit">{displayName}</Button>
         {error && error.response &&
         <div>
@@ -86,15 +95,33 @@ const mapDispatch = (dispatch) => {
     handleSubmit (evt) {
       evt.preventDefault()
       const formName = evt.target.name
-      const email = evt.target.email.value
-      const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+      let userInfo = {
+        email: evt.target.email.value,
+        password: evt.target.password.value
+      }
+      dispatch(auth(userInfo, formName))
+    }
+  }
+}
+const mapSignupDispatch = dispatch => {
+  return {
+    handleSubmit (evt) {
+      evt.preventDefault();
+      const userInfo = {
+        firstName: evt.target.firstName.value,
+        lastName: evt.target.lastName.value,
+        email: evt.target.email.value,
+        password: evt.target.password.value,
+        role: 'user'
+      }
+      const formName = evt.target.name;
+      dispatch(auth(userInfo, formName));
     }
   }
 }
 
 export const Login = connect(mapLogin, mapDispatch)(AuthForm)
-export const Signup = connect(mapSignup, mapDispatch)(AuthForm)
+export const Signup = connect(mapSignup, mapSignupDispatch)(AuthForm)
 
 /**
  * PROP TYPES
