@@ -18,15 +18,15 @@ class Orders extends Component {
     const { showUserInfo } = this.props;
     const colors = {
       'CANCELLED': 'red',
-      'COMPLETED': 'teal',
-      'PROCESSING': 'blue',
+      'COMPLETED': 'blue',
+      'PROCESSING': 'teal',
       'CREATED': 'orange',
     };
     return (
       <Item key={order.id} as={Link} to={'/orders/' + order.id}>
         <Item.Content>
           <Item.Header>Order #{order.id}</Item.Header>
-          <Item.Meta>Ordered on {new Date(order.orderedAt).toTimeString()}</Item.Meta>
+          <Item.Meta>Ordered on {new Date(order.orderedAt).toDateString()}, {new Date(order.orderedAt).toTimeString()}</Item.Meta>
           <Label color={colors[order.status]} ribbon>ORDER {order.status}</Label>
           <Item.Description>Order Total: ${Number(order.total).toFixed(2)}</Item.Description>
         </Item.Content>

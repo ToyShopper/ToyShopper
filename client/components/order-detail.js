@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchOrder, updateOrderStatus } from '../store/order';
 import { Item, Segment, Step } from 'semantic-ui-react';
@@ -6,19 +7,6 @@ import { Item, Segment, Step } from 'semantic-ui-react';
 class OrderDetail extends Component {
   componentDidMount() {
     this.props.loadOrder();
-  }
-
-  renderOrderItem(item) {
-    return (
-      <Item key={item.id}>
-        <Item.Content>
-          <Item.Image src={item.product.imageURL} size="tiny" />
-          <Item.Header>{item.product.title}</Item.Header>
-          <Item.Description>Quantity: {item.quantity}</Item.Description>
-          <Item.Description>Price: ${Number(item.priceAtOrder).toFixed(2)}</Item.Description>
-        </Item.Content>
-      </Item>
-    );
   }
 
   changeOrderStatus(status) {
@@ -48,6 +36,19 @@ class OrderDetail extends Component {
     );
   }
 
+  renderOrderItem(item) {
+    return (
+      <Item key={item.id}>
+        <Item.Content>
+          <Item.Image src={item.product.imageURL} size="tiny" />
+          <Item.Header as={Link} to={'/products/' + item.product.id}>{item.product.title}</Item.Header>
+          <Item.Description>Quantity: {item.quantity}</Item.Description>
+          <Item.Description>Price: ${Number(item.priceAtOrder).toFixed(2)}</Item.Description>
+        </Item.Content>
+      </Item>
+    );
+  }
+
   render() {
     const { order } = this.props;
     return (
@@ -57,7 +58,7 @@ class OrderDetail extends Component {
             <div>
               <Item>
                 <Item.Header as="h1">Order #{order.id}</Item.Header>
-                <Item.Meta>Ordered on {new Date(order.orderedAt).toTimeString()}</Item.Meta>
+              <Item.Meta>Ordered on {new Date(order.orderedAt).toDateString()}, {new Date(order.orderedAt).toTimeString()}</Item.Meta>
                 <Item.Description>Customer Email Address: {order.email}</Item.Description>
                 {order.status && this.renderOrderStatus()}
 
