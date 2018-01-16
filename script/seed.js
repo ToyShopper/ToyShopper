@@ -116,7 +116,7 @@ async function seed () {
     }),
     Review.create({
       text: 'this product stinks',
-      rating: 0
+      rating: 1
     })
     .then(review => {
       review.setUser(2);

@@ -8,6 +8,9 @@ const GET_ORDERS = 'GET_ORDERS';
 const CONFIRM_NEW_ORDER = 'CONFIRM_NEW_ORDER';
 const FILTER_ORDERS = 'FILTER_ORDERS';
 const SEND_CONFIRMATION_EMAIL = 'SEND_CONFIRMATION_EMAIL';
+const SEND_PASSWORD_RESET_EMAIL = 'SEND_PASSWORD_RESET_EMAIL';
+const SEND_PASSWORD_RESET_CONFIRMATION_EMAIL = 'SEND_PASSWORD_RESET_CONFIRMATION_EMAIL';
+
 
 /**
  * ACTION CREATORS
@@ -44,8 +47,28 @@ export const sendConfirmationEmail = (email) => dispatch =>
     .then(res => dispatch({type: SEND_CONFIRMATION_EMAIL, action: res.data}))
     .catch(err => console.log(err));
 
+export const sendPasswordResetEmail = (email) => dispatch =>
+  axios.post('/api/forgot/', email)
+  .then(res => dispatch({type: SEND_PASSWORD_RESET_EMAIL, action: res.data}))
+  .catch(err => console.log(err));
+
+export const sendPasswordResetConfirmationEmail = (password, token) => dispatch =>
+  axios.post('/api/reset/' + token, password)
+    .then(res => dispatch({type: SEND_PASSWORD_RESET_CONFIRMATION_EMAIL, action: res.data}))
+    .catch(err => console.log(err));
+
 export const fetchOrdersByStatus = status => dispatch =>
     axios.get('/api/orders/?status=' + status)
+    .then(res => dispatch(filterOrders(res.data)))
+    .catch(err => console.log(err));
+
+export const fetchOrdersByUser = userId => dispatch =>
+    axios.get('/api/orders/users/' + userId)
+    .then(res => dispatch(filterOrders(res.data)))
+    .catch(err => console.log(err));
+
+export const fetchOrdersByUserAndStatus = (userId, status) => dispatch =>
+    axios.get('/api/orders/users/' + userId + '/?status=' + status)
     .then(res => dispatch(filterOrders(res.data)))
     .catch(err => console.log(err));
 

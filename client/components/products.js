@@ -20,16 +20,17 @@ class Products extends Component {
   // }
 
   render() {
-    const { products, displayName, user } = this.props;
+    const { products, displayName, isAdmin } = this.props;
     return (
       <div>
         {/* {this.user && this.user.isAdmin &&  */}
-        {user && user.role === 'admin' && <Segment>
+        {isAdmin && <Segment>
           <Button as={Link} to="/products/add" floated="right">Add a new product</Button>
           <Divider horizontal>Admin Only</Divider>
         </Segment>}
         <h1>{displayName}</h1>
         {products.length > 0 && (
+          <Segment raised>
           <Item.Group divided>
             {products.map(product => (
               <Item key={product.id}>
@@ -39,14 +40,18 @@ class Products extends Component {
                   <Item.Description as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Description>
                   <Item.Extra>
                     {product.categories ? product.categories.map(category => (
-                    <Label key={category.id} as={Link} to={'/categories/' + category.name}>
+                    <Label key={category.id} as={Link} to={'/categories/' + category.name + '/products'} tag>
                     {category.name}
                     </Label>)) : null}
                   </Item.Extra>
+                    {isAdmin && <Item.Description as="h4">
+                      Inventory quantity: {product.quantity}
+                    </Item.Description>}
                 </Item.Content>
               </Item>
             ))}
           </Item.Group>
+          </Segment>
         )}
       </div>
     );
@@ -59,6 +64,7 @@ const mapAllProductsState = ({ user, products }) => ({
   user,
   products,
   displayName: 'All Products',
+  isAdmin: user && user.role === 'admin',
 });
 const mapProductsByCategoryState = ({ products }, ownProps) => ({
   products,
@@ -66,7 +72,7 @@ const mapProductsByCategoryState = ({ products }, ownProps) => ({
 });
 const mapProductsBySearchState = ({ products }, ownProps) => ({
   products,
-  displayName: 'All Products with Keyword - ' + ownProps.match.params.keyword,
+  displayName: 'All Products with Keyword: ' + ownProps.match.params.keyword,
 });
 
 const mapAllDispatch = dispatch => ({

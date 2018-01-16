@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { fetchProductDetail } from '../store/product';
 import { addToCart } from '../store/cart';
 import { fetchReviewsForProduct, addReview } from '../store/reviews';
-import { Item, Comment, Form, Header, Rating, Segment, Button, Divider } from 'semantic-ui-react'
+import { Item, Comment, Form, Header, Rating, Segment, Button, Divider, Label } from 'semantic-ui-react'
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -100,10 +100,10 @@ class ProductDetail extends Component {
   }
 
   render() {
-    const { product, reviews, user } = this.props;
+    const { product, reviews, isAdmin, isLoggedIn } = this.props;
     return (
       <div>
-        {user.role === 'admin' && <Segment>
+        {isAdmin && <Segment>
           <Button as={Link} to={'/products/' + product.id + '/edit'} floated="right">Edit this product</Button>
           <Divider horizontal>Admin Only</Divider>
         </Segment>}
@@ -114,11 +114,18 @@ class ProductDetail extends Component {
               <Item.Content>
                 <Item.Image size="large" src={product.imageURL} />
                 <Item.Extra as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Extra>
+                <Item.Extra>
+                  {product.categories ? product.categories.map(category => (
+                    <Label key={category.id} as={Link} to={'/categories/' + category.name} tag>
+                      {category.name}
+                    </Label>)) : null}
+                </Item.Extra>
                 <Item.Meta as="h4">Item Description</Item.Meta>
-                <Item.Description as="p">{product.description}</Item.Description>
+                <Item.Description as="pre">{product.description}</Item.Description>
+                {product.quantity > 0 ?
                 <Form name="quantity" onSubmit={(event) => this.handleQuantitySubmit(event, product)}>
                   <Form.Input id="quantity" label="Quantity" value={this.state.quantity} onChange={this.handleChange('quantity')} action={{ labelPosition: 'left', icon: 'add to cart', content: 'Add to Cart' }} />
-                </Form>
+                </Form> : <h4>This product is out of stock.</h4>}
               </Item.Content>
             </Item>
           </Segment>
@@ -128,7 +135,7 @@ class ProductDetail extends Component {
             <Header as="h2" dividing>Reviews for this product</Header>
             {reviews.map(review => this.renderReview(review))}
           </div>)}
-          {user.id && this.renderAddReviewForm()}
+          {isLoggedIn && this.renderAddReviewForm()}
         </Comment.Group>
       </div>)
   }
@@ -136,7 +143,11 @@ class ProductDetail extends Component {
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapState = ({ product, reviews, user }) => ({ product, reviews, user });
+const mapState = ({ product, reviews, user }) => ({
+  product, reviews,
+  isAdmin: user && user.role === 'admin',
+  isLoggedIn: !!user,
+});
 
 const mapDispatch = (dispatch, ownProps) => ({
   loadProductDetail: () => {

@@ -94,7 +94,9 @@ class Cart extends Component {
         </Segment>
         <Button onClick={() => this.handleSubmit()}>Update Quantities</Button>
         <h3>Total: ${Number(cart.total).toFixed(2)}</h3>
-        <Button as={Link} to="/checkout" disabled={!Object.keys(cart.items).length} positive>Checkout</Button>
+        <Button as={Link} to="/checkout" disabled={items.length === 0} positive>
+        <Icon name="add to cart" />
+        Checkout</Button>
       </div>
     );
   }

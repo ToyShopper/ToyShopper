@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUsers, putUser, deleteUser } from '../store/users';
+import { sendPasswordResetEmail } from '../store/orders';
 import { Item, Button, Segment } from 'semantic-ui-react'
 
 class UserList extends Component {
@@ -25,6 +26,7 @@ class UserList extends Component {
                   <Item.Content>
                     <Button name={user.id} onClick={() => this.props.changeUserRole(user)}>{user.role === 'admin' ? 'Demote User' : 'Promote User'}</Button>
                     <Button name={user.id} onClick={() => this.props.removeUser(user.id)}>Delete User</Button>
+                    <Button name={user.id} onClick={() => this.props.triggerReset(user.email)}>Trigger Password Reset</Button>
                   </Item.Content>
                 </Item>
               ))}
@@ -48,6 +50,9 @@ const mapDispatch = dispatch => ({
   },
   removeUser: (userId) => {
     return dispatch(deleteUser(userId));
+  },
+  triggerReset: (email) => {
+    return dispatch(sendPasswordResetEmail({email}))
   }
 });
 
