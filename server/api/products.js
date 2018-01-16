@@ -69,7 +69,9 @@ router.get('/:id', (req, res, next) => {
       },
     ],
   })
-    .then(product => res.json(product))
+    .then(product => {
+      res.json(product);
+    })
     .catch(next);
 });
 
@@ -83,11 +85,42 @@ function findAverageRating(product) {
   }
 }
 
-router.put('/:id', (req, res, next) => {
-  Product.findById(req.params.id).then(product => {
-    product
-      .update(req.body)
-      .then(newProduct => res.json(newProduct))
-      .catch(next);
-  });
+router.post('/:id/categories', (req, res, next) => {
+  Category.findOne({
+    where: {
+      name: req.body.name,
+    },
+  })
+    .then(category => {
+      if (!category) {
+        Category.create(req.body).then(newCategory => {
+          Product.findById(req.params.id).then(product => {
+            product.addCategory(newCategory);
+          });
+        });
+      } else {
+        Product.findById(req.params.id).then(product => {
+          product.addCategory(category);
+        });
+      }
+    })
+    .then(() => {
+      res.status(201).end();
+    })
+    .catch(next);
+});
+
+router.delete('/:id/categories', (req, res, next) => {
+  Product.findById(req.params.id)
+    .then(product => {
+      Category.findOne({
+        where: {
+          name: req.body.name,
+        },
+      }).then(category => {
+        product.removeCategory(category.id);
+      });
+    })
+    .then(() => res.status(204).end())
+    .catch(next);
 });
