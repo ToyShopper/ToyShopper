@@ -110,17 +110,14 @@ router.post('/:id/categories', (req, res, next) => {
     .catch(next);
 });
 
-router.delete('/:id/categories', (req, res, next) => {
-  Product.findById(req.params.id)
-    .then(product => {
-      Category.findOne({
-        where: {
-          name: req.body.name,
-        },
-      }).then(category => {
-        product.removeCategory(category.id);
-      });
-    })
-    .then(() => res.status(204).end())
-    .catch(next);
+router.delete('/:productId/categories/:categoryId', async (req, res, next) => {
+  try {
+    const {productId, categoryId} = req.params;
+    const product = await Product.findById(productId);
+    const category = await Category.findById(categoryId);
+    const result = await product.removeCategory(category.id);
+    res.status(204).json(result);
+  } catch (err) {
+    next(err);
+  }
 });

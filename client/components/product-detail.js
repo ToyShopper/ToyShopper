@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchProductDetail } from '../store/product';
+import { fetchProductDetail, deleteCategoryFromProduct } from '../store/product';
 import { addToCart } from '../store/cart';
 import { fetchReviewsForProduct, addReview } from '../store/reviews';
-import { Item, Comment, Form, Header, Rating, Segment, Button, Divider, Label } from 'semantic-ui-react'
+import { Item, Comment, Form, Header, Rating, Segment, Button, Divider, Label, Dropdown } from 'semantic-ui-react'
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -99,6 +99,48 @@ class ProductDetail extends Component {
       </Form>)
   }
 
+  renderAddCategoryBox() {
+    const {product} = this.props;
+
+    // TODO: change product.categories to all categories except
+    // the ones that are on this product
+    const categoryOptions = product.categories.map(category => ({
+      key: category.id,
+      text: category.name,
+      value: category.name,
+    }));
+
+    return (
+    <Dropdown
+      button size="small"
+      className="icon"
+      floating
+      labeled
+      icon="tag"
+      options={categoryOptions}
+      search
+      text="Add a new category"
+    />
+    );
+  }
+
+  renderCategories(categories) {
+    const { isAdmin, product, removeCategoryFromProduct} = this.props;
+
+    return (
+      <div>
+      {categories.map(category => (
+      <Label key={category.id} tag>
+        {category.name}
+        {isAdmin &&
+        <Label
+        as={Button} color="red" floating circular
+        onClick={() => removeCategoryFromProduct(product, category)}>X</Label>}
+      </Label>))}
+      <div>{this.renderAddCategoryBox()}</div>
+      </div>)
+  }
+
   render() {
     const { product, reviews, isAdmin, isLoggedIn } = this.props;
     return (
@@ -112,13 +154,11 @@ class ProductDetail extends Component {
             <Item>
               <Header as="h1" dividing>{product.title}</Header>
               <Item.Content>
+                {isAdmin && <Item.Content as="h4">Product ID: {product.id}</Item.Content>}
                 <Item.Image size="large" src={product.imageURL} />
                 <Item.Extra as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Extra>
                 <Item.Extra>
-                  {product.categories ? product.categories.map(category => (
-                    <Label key={category.id} as={Link} to={'/categories/' + category.name} tag>
-                      {category.name}
-                    </Label>)) : null}
+                  {this.renderCategories(product.categories)}
                 </Item.Extra>
                 <Item.Meta as="h4">Item Description</Item.Meta>
                 <Item.Description as="pre">{product.description}</Item.Description>
@@ -143,10 +183,10 @@ class ProductDetail extends Component {
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapState = ({ product, reviews, user }) => ({
+const mapState = ({ product, reviews, user, categories }) => ({
   product, reviews,
   isAdmin: user && user.role === 'admin',
-  isLoggedIn: !!user,
+  isLoggedIn: !!user.id,
 });
 
 const mapDispatch = (dispatch, ownProps) => ({
@@ -161,6 +201,9 @@ const mapDispatch = (dispatch, ownProps) => ({
   },
   submitReview: (review) => {
     return dispatch(addReview(review));
+  },
+  removeCategoryFromProduct: (product, category) => {
+    return dispatch(deleteCategoryFromProduct(product, category));
   }
 });
 

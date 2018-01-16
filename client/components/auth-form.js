@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {auth, authLogin} from '../store'
+import {auth} from '../store'
 import { Button, Checkbox, Form, Divider, Segment, Message, Icon, Grid, Input } from 'semantic-ui-react'
 
 /**
@@ -13,7 +13,8 @@ const AuthForm = (props) => {
 
   return (
     <div>
-      <Grid textAlign='center'
+      <Grid
+      textAlign="center"
       style={{ height: '100%' }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
       <Segment.Group compact>
