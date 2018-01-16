@@ -60,6 +60,11 @@ export const fetchOrdersByUser = userId => dispatch =>
     .then(res => dispatch(filterOrders(res.data)))
     .catch(err => console.log(err));
 
+export const fetchOrdersByUserAndStatus = (userId, status) => dispatch =>
+    axios.get('/api/orders/users/' + userId + '/?status=' + status)
+    .then(res => dispatch(filterOrders(res.data)))
+    .catch(err => console.log(err));
+
 /**
  * REDUCER
  */

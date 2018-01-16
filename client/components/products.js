@@ -30,6 +30,7 @@ class Products extends Component {
         </Segment>}
         <h1>{displayName}</h1>
         {products.length > 0 && (
+          <Segment raised>
           <Item.Group divided>
             {products.map(product => (
               <Item key={product.id}>
@@ -39,7 +40,7 @@ class Products extends Component {
                   <Item.Description as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Description>
                   <Item.Extra>
                     {product.categories ? product.categories.map(category => (
-                    <Label key={category.id} as={Link} to={'/categories/' + category.name}>
+                    <Label key={category.id} as={Link} to={'/categories/' + category.name + '/products'} tag>
                     {category.name}
                     </Label>)) : null}
                   </Item.Extra>
@@ -47,6 +48,7 @@ class Products extends Component {
               </Item>
             ))}
           </Item.Group>
+          </Segment>
         )}
       </div>
     );
@@ -66,7 +68,7 @@ const mapProductsByCategoryState = ({ products }, ownProps) => ({
 });
 const mapProductsBySearchState = ({ products }, ownProps) => ({
   products,
-  displayName: 'All Products with Keyword - ' + ownProps.match.params.keyword,
+  displayName: 'All Products with Keyword: ' + ownProps.match.params.keyword,
 });
 
 const mapAllDispatch = dispatch => ({

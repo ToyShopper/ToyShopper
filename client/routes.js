@@ -8,7 +8,7 @@ import {Main, Login, Signup, UserHome,
   ProductDetail, AddProductForm, EditProductForm,
   Cart, Checkout,
   UserList, UserDetail,
-  ForgotPassForm, Order, AllOrders, UserOrders } from './components'
+  OrderDetail, AllOrders, MyOrders, ForgotPassForm } from './components'
 import {me} from './store'
 
 /**
@@ -20,7 +20,7 @@ class Routes extends Component {
   }
 
   render () {
-    const {isLoggedIn} = this.props
+    const {isLoggedIn, isAdmin} = this.props
 
     return (
       <Router history={history}>
@@ -29,8 +29,12 @@ class Routes extends Component {
             {/* Routes placed here are available to all visitors */}
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
+<<<<<<< HEAD
             <Route path="/forgot" component={ForgotPassForm} />
             <Route path="/categories/:category" component={ProductsByCategory} />
+=======
+            <Route path="/categories/:category/products" component={ProductsByCategory} />
+>>>>>>> 3469ec55a520462144e4dbb2b4f54c36ee30fd12
             <Route exact path="/products/search/:keyword" component={ProductsBySearch} />
             <Route exact path="/products/add" component={AddProductForm} />
             <Route exact path="/products/:id/edit" component={EditProductForm} />
@@ -43,9 +47,9 @@ class Routes extends Component {
 
             <Route path="/cart" component={Cart} />
             <Route path="/checkout" component={Checkout} />
-            <Route path="/orders/users/:id" component={UserOrders} />
-            <Route path="/orders/:id" component={Order} />
-            <Route path="/orders/" component={AllOrders} />
+            <Route path="/orders/users/:id" component={MyOrders} />
+            <Route path="/orders/:id" component={OrderDetail} />
+            {isAdmin && <Route path="/orders/" component={AllOrders} />}
             {
               isLoggedIn &&
                 <Switch>
@@ -69,7 +73,8 @@ const mapState = (state) => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    isAdmin: (state.user.role && state.user.role === 'admin'),
   }
 }
 

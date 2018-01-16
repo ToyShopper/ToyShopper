@@ -28,6 +28,7 @@ router.get('/search/:keyword', (req, res, next) => {
       quantity: { $gt: 0 },
       title: { $iLike: '%' + req.params.keyword + '%' },
     },
+    include: [{ model: Category }],
   })
     .then(products => res.json(products))
     .catch(next);
@@ -43,6 +44,7 @@ router.get('/:id', (req, res, next) => {
       {
         model: Review,
       },
+      { model: Category },
     ],
   })
     .then(product => res.json(product))
