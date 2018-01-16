@@ -6,23 +6,24 @@ const { Category } = require('../db/models');
 module.exports = router;
 
 router.get('/', (req, res, next) => {
+  // let's set up different query condition based on user's role
+  let where = {}, attributes = ['id', 'title', 'price', 'imageURL', 'secondaryImages'];
   if (req.user && req.user.role === 'admin') {
-    Product.findAll({
-      include: [{ model: Category }],
-      attributes: ['id', 'title', 'price', 'imageURL', 'secondaryImages'],
-    })
-      .then(products => res.json(products))
-      .catch(next);
+    // admins should be able to see product inventory
+    attributes.push('quantity');
   } else {
-    Product.findAll({
-      // explicitly select only the columns needed
-      where: { quantity: { $gt: 0 } },
-      include: [{ model: Category }],
-      attributes: ['id', 'title', 'price', 'imageURL', 'secondaryImages'],
-    })
-      .then(products => res.json(products))
-      .catch(next);
+    // only show available products for non admin users
+    where = { quantity: { $gt: 0 } };
   }
+
+  Product.findAll({
+    where: where,
+    include: [{ model: Category }],
+    // explicitly select only the columns needed
+    attributes: attributes,
+  })
+    .then(products => res.json(products))
+    .catch(next);
 });
 
 router.post('/', (req, res, next) => {
@@ -55,38 +56,21 @@ router.get('/search/:keyword', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  if (req.user && req.user.role === 'admin') {
-    Product.findOne({
-      where: {
-        id: req.params.id,
+  Product.findOne({
+    where: {
+      id: req.params.id,
+    },
+    include: [
+      {
+        model: Review,
       },
-      include: [
-        {
-          model: Review,
-        },
-        {
-          model: Category,
-        },
-      ],
-    })
-      .then(product => res.json(product))
-      .catch(next);
-  } else {
-    Product.findOne({
-      where: {
-        quantity: { $gt: 0 },
-        id: req.params.id,
+      {
+        model: Category,
       },
-      include: [
-        {
-          model: Review,
-        },
-        { model: Category },
-      ],
-    })
-      .then(product => res.json(product))
-      .catch(next);
-  }
+    ],
+  })
+    .then(product => res.json(product))
+    .catch(next);
 });
 
 function findAverageRating(product) {

@@ -20,11 +20,11 @@ class Products extends Component {
   // }
 
   render() {
-    const { products, displayName, user } = this.props;
+    const { products, displayName, isAdmin } = this.props;
     return (
       <div>
         {/* {this.user && this.user.isAdmin &&  */}
-        {user && user.role === 'admin' && <Segment>
+        {isAdmin && <Segment>
           <Button as={Link} to="/products/add" floated="right">Add a new product</Button>
           <Divider horizontal>Admin Only</Divider>
         </Segment>}
@@ -44,6 +44,9 @@ class Products extends Component {
                     {category.name}
                     </Label>)) : null}
                   </Item.Extra>
+                    {isAdmin && <Item.Description as="h4">
+                      Inventory quantity: {product.quantity}
+                    </Item.Description>}
                 </Item.Content>
               </Item>
             ))}
@@ -61,6 +64,7 @@ const mapAllProductsState = ({ user, products }) => ({
   user,
   products,
   displayName: 'All Products',
+  isAdmin: user && user.role === 'admin',
 });
 const mapProductsByCategoryState = ({ products }, ownProps) => ({
   products,
