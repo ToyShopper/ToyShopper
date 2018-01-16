@@ -7,7 +7,8 @@ module.exports = router;
 
 router.get('/', (req, res, next) => {
   // let's set up different query condition based on user's role
-  let where = {}, attributes = ['id', 'title', 'price', 'imageURL', 'secondaryImages'];
+  let where = {},
+    attributes = ['id', 'title', 'price', 'imageURL', 'secondaryImages'];
   if (req.user && req.user.role === 'admin') {
     // admins should be able to see product inventory
     attributes.push('quantity');
@@ -28,7 +29,9 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   Product.create(req.body)
-    .then(product => res.json(product))
+    .then(product => {
+      res.json(product);
+    })
     .catch(next);
 });
 
@@ -70,19 +73,26 @@ router.get('/:id', (req, res, next) => {
     ],
   })
     .then(product => {
-      res.json(product);
+      let averageRating = findAverageRating(product)
+      console.log(averageRating);
+      product.update({averageRating})
+      .then(updated => {
+        res.json(updated)
+      })
+      // res.json(product);
     })
     .catch(next);
 });
 
 function findAverageRating(product) {
-  if (product.reviews.length) {
+  if (product.reviews && product.reviews.length) {
     let reviews = product.reviews;
     let averageRating =
       reviews
         .map(review => review.rating)
         .reduce((sum, rating) => sum + rating) / reviews.length;
-  }
+    return Number(averageRating.toFixed(2));
+  } return 5;
 }
 
 router.post('/:id/categories', (req, res, next) => {
