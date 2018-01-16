@@ -38,10 +38,15 @@ const AuthForm = (props) => {
         </Message>
         </div>}
       </Form>
-      <Divider></Divider>
+      <Divider />
         <Link to="/auth/google" target="_self">
-          <Button color='google plus'>
-          <Icon name='google plus' /> Login with Google
+          <Button color="google plus">
+          <Icon name="google plus" /> Login with Google
+          </Button>
+        </Link>
+        <Link to="/forgot">
+          <Button color="blue">
+          <Icon name="key" />Forgot Password?
           </Button>
         </Link>
       </Segment>
