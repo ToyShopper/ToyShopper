@@ -73,12 +73,11 @@ router.get('/:id', (req, res, next) => {
     ],
   })
     .then(product => {
-      let averageRating = findAverageRating(product)
+      let averageRating = findAverageRating(product);
       console.log(averageRating);
-      product.update({averageRating})
-      .then(updated => {
-        res.json(updated)
-      })
+      product.update({ averageRating }).then(updated => {
+        res.json(updated);
+      });
       // res.json(product);
     })
     .catch(next);
@@ -92,37 +91,31 @@ function findAverageRating(product) {
         .map(review => review.rating)
         .reduce((sum, rating) => sum + rating) / reviews.length;
     return Number(averageRating.toFixed(2));
-  } return 5;
+  }
+  return 5;
 }
 
-router.post('/:id/categories', (req, res, next) => {
-  Category.findOne({
-    where: {
-      name: req.body.name,
-    },
-  })
-    .then(category => {
-      if (!category) {
-        Category.create(req.body).then(newCategory => {
-          Product.findById(req.params.id).then(product => {
-            product.addCategory(newCategory);
-          });
-        });
-      } else {
-        Product.findById(req.params.id).then(product => {
-          product.addCategory(category);
-        });
-      }
-    })
-    .then(() => {
-      res.status(201).end();
-    })
-    .catch(next);
+router.post('/:productId/categories/:categoryId', async (req, res, next) => {
+  try {
+    const { productId, categoryId } = req.params;
+    const product = await Product.findById(productId);
+    const category = await Category.findById(categoryId);
+    if (category) {
+      const result = await product.addCategory(category);
+      res.status(201).json(result);
+    } else {
+      const newCategory = await Category.create(req.body);
+      const result = await product.addCategory(newCategory);
+      res.status(201).json(result);
+    }
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.delete('/:productId/categories/:categoryId', async (req, res, next) => {
   try {
-    const {productId, categoryId} = req.params;
+    const { productId, categoryId } = req.params;
     const product = await Product.findById(productId);
     const category = await Category.findById(categoryId);
     const result = await product.removeCategory(category.id);
