@@ -34,6 +34,13 @@ export const editProductDetail = product => dispatch =>
     history.push('/products/' + product.id);
   })
 
+export const addNewCategoryToProduct = (product, category) => dispatch =>
+  axios.post('/api/products/' + product.id + '/categories', category)
+  .then(res => {
+    const updatedProduct = Object.assign({}, product, { categories: [...product.categories, category]});
+    dispatch(addCategoryToProduct(updatedProduct));
+  })
+
 export const deleteCategoryFromProduct = (product, category) => dispatch =>
   axios.delete('/api/products/' + product.id + '/categories/' + category.id)
     .then(res => {
@@ -48,6 +55,7 @@ export default function (state = {}, action) {
   switch (action.type) {
     case GET_PRODUCT_DETAIL:
     case UPDATE_PRODUCT_DETAIL:
+    case ADD_CATEGORY_TO_PRODUCT:
     case REMOVE_CATEGORY_FROM_PRODUCT:
       return action.product;
     default:

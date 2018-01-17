@@ -15,10 +15,6 @@ class Products extends Component {
     this.props.loadProducts();
   }
 
-  // componentWillReceiveProps() {
-  //   this.props.loadProducts();
-  // }
-
   render() {
     const { products, displayName, isAdmin } = this.props;
     return (
