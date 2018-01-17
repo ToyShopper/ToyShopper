@@ -6,7 +6,7 @@ import {
   fetchProductsByCategory,
   fetchProductsBySearch,
 } from '../store/products';
-import { Item, Label, Button, Segment, Divider, Rating } from 'semantic-ui-react'
+import { Item, Label, Button, Segment, Divider, Rating, Card, Image } from 'semantic-ui-react'
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -31,30 +31,40 @@ class Products extends Component {
         <h1>{displayName}</h1>
         {products.length > 0 && (
           <Segment raised>
-          <Item.Group divided>
+          <Card.Group>
             {products.map(product => (
-              <Item key={product.id}>
-                <Item.Image src={product.imageURL} />
-                <Item.Content>
-                  <Item.Header as={Link} to={'/products/' + product.id}>{product.title}</Item.Header>
-                  <Item.Description as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Description>
-                  <Item.Content>
-                      <Item.Extra as="h4">Average Review Rating: {Number(product.averageRating).toFixed(2)} <Rating maxRating={5} defaultRating={product.averageRating} icon="star" disabled />
-                      </Item.Extra>
-                  </Item.Content>
-                  <Item.Extra>
-                    {product.categories ? product.categories.map(category => (
+            <Card key={product.id} raised color="grey" link>
+              <Image src={product.imageURL} href={'/products/' + product.id}/>
+              <Card.Content href={'/products/' + product.id}>
+                <Card.Header>
+                  {product.title}
+                </Card.Header>
+                <Card.Meta>
+                  Inventory: {product.quantity}
+                </Card.Meta>
+                <br/>
+                <Card.Description as="h4">
+                Price: ${Number(product.price).toFixed(2)}
+                </Card.Description>
+                </Card.Content>
+                <Card.Content>
+                {product.categories ? product.categories.map(category => (
                     <Label key={category.id} as={Link} to={'/categories/' + category.name + '/products'} tag>
                     {category.name}
                     </Label>)) : null}
-                  </Item.Extra>
-                    {isAdmin && <Item.Description as="h4">
-                      Inventory quantity: {product.quantity}
-                    </Item.Description>}
-                </Item.Content>
-              </Item>
+                </Card.Content>
+                <Card.Content >
+
+                <Card.Description>
+                  Average Rating:
+                {Number(product.averageRating).toFixed(2)} <br/> <Rating maxRating={5} defaultRating={product.averageRating} icon="star" disabled />
+                </Card.Description>
+                </Card.Content>
+
+            </Card>
+
             ))}
-          </Item.Group>
+          </Card.Group>
           </Segment>
         )}
       </div>
