@@ -6,7 +6,7 @@ import {
   fetchProductsByCategory,
   fetchProductsBySearch,
 } from '../store/products';
-import { Item, Label, Button, Segment, Divider } from 'semantic-ui-react'
+import { Item, Label, Button, Segment, Divider, Rating } from 'semantic-ui-react'
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -38,6 +38,10 @@ class Products extends Component {
                 <Item.Content>
                   <Item.Header as={Link} to={'/products/' + product.id}>{product.title}</Item.Header>
                   <Item.Description as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Description>
+                  <Item.Content>
+                      <Item.Extra as="h4">Average Review Rating: {Number(product.averageRating).toFixed(2)} <Rating maxRating={5} defaultRating={product.averageRating} icon="star" disabled />
+                      </Item.Extra>
+                  </Item.Content>
                   <Item.Extra>
                     {product.categories ? product.categories.map(category => (
                     <Label key={category.id} as={Link} to={'/categories/' + category.name + '/products'} tag>
