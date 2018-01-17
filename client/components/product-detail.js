@@ -156,6 +156,8 @@ class ProductDetail extends Component {
               <Item.Content>
                 {isAdmin && <Item.Content as="h4">Product ID: {product.id}</Item.Content>}
                 <Item.Image size="large" src={product.imageURL} />
+                <Item.Extra as="h4">Average Review Rating: {Number(product.averageRating).toFixed(2)} <Rating maxRating={5} defaultRating={product.averageRating} icon="star" disabled />
+                </Item.Extra>
                 <Item.Extra as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Extra>
                 <Item.Extra>
                   {this.renderCategories(product.categories)}
@@ -184,7 +186,7 @@ class ProductDetail extends Component {
 /* -----------------    CONTAINER     ------------------ */
 
 const mapState = ({ product, reviews, user, categories }) => ({
-  product, reviews,
+  product, reviews, categories,
   isAdmin: user && user.role === 'admin',
   isLoggedIn: !!user.id,
 });
