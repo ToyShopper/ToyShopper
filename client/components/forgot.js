@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Form, Divider, Segment, Message, Container } from 'semantic-ui-react'
+import { Button, Form, Divider, Segment, Message, Container, Input } from 'semantic-ui-react'
 import { sendPasswordResetEmail } from '../store/orders';
 import { ToastContainer } from 'react-toastr';
 
@@ -25,19 +25,14 @@ class ForgotPassForm extends Component {
             className="toast-top-right" />
           <Form onSubmit={this.props.handleSubmit} name="forgotPassword">
             <Form.Field>
-              <label htmlFor="email">Email Address</label>
-              <input placeholder="Email Address" name="email" />
+              <Input placeholder="Email Address" name="email" iconPosition="left" icon="at" />
             </Form.Field>
             <br />
-            <Button color="blue" type="submit">Reset Password</Button>
+            <Button
+            color="blue" type="submit" onClick={() =>
+              container.success(this.renderMessage('Success', 'An email with instructions has been sent.'))
+            }>Reset Password</Button>
           </Form>
-          <Divider />
-          <Button
-            className="primary"
-            onClick={() =>
-              container.success(this.renderMessage('Warning', 'We are cool'))
-            }>Test
-          </Button>
         </Segment>
       </Container>
     )
