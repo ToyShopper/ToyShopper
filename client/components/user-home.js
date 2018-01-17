@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+import {Image, Divider} from 'semantic-ui-react'
 
 /**
  * COMPONENT
@@ -10,7 +11,9 @@ export const UserHome = (props) => {
 
   return (
     <div>
-      <h3>Welcome, {email}</h3>
+      <h1>Welcome, {email}</h1>
+      <Divider clearing />
+      <Image src="/logo.png" />
     </div>
   )
 }

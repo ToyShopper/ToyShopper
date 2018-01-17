@@ -26,7 +26,6 @@ class Products extends Component {
         </Segment>}
         <h1>{displayName}</h1>
         {products.length > 0 && (
-          <Segment raised>
           <Card.Group>
             {products.map(product => (
             <Card key={product.id} raised color="grey" link>
@@ -35,9 +34,9 @@ class Products extends Component {
                 <Card.Header>
                   {product.title}
                 </Card.Header>
-                <Card.Meta>
+                {isAdmin && <Card.Meta>
                   Inventory: {product.quantity}
-                </Card.Meta>
+                </Card.Meta>}
                 <br/>
                 <Card.Description as="h4">
                 Price: ${Number(product.price).toFixed(2)}
@@ -61,7 +60,6 @@ class Products extends Component {
 
             ))}
           </Card.Group>
-          </Segment>
         )}
       </div>
     );
