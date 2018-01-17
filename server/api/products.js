@@ -8,7 +8,7 @@ module.exports = router;
 router.get('/', (req, res, next) => {
   // let's set up different query condition based on user's role
   let where = {},
-    attributes = ['id', 'title', 'price', 'imageURL', 'secondaryImages'];
+    attributes = ['id', 'title', 'price', 'imageURL', 'secondaryImages', 'averageRating'];
   if (req.user && req.user.role === 'admin') {
     // admins should be able to see product inventory
     attributes.push('quantity');

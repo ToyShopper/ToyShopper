@@ -6,6 +6,8 @@ import { addToCart } from '../store/cart';
 import { fetchReviewsForProduct, addReview } from '../store/reviews';
 import { fetchAllCategories } from '../store/categories';
 import { Item, Comment, Form, Header, Rating, Segment, Button, Divider, Label, Dropdown } from 'semantic-ui-react';
+import Markdown from 'react-markdown';
+
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -160,12 +162,14 @@ class ProductDetail extends Component {
               <Item.Content>
                 {isAdmin && <Item.Content as="h4">Product ID: {product.id}</Item.Content>}
                 <Item.Image size="large" src={product.imageURL} />
-                <Item.Extra as="h3">Price: ${Number(product.price).toFixed(2)}</Item.Extra>
+                <Item.Extra as="h4">Average Review Rating: {Number(product.averageRating).toFixed(2)} <Rating maxRating={5} defaultRating={product.averageRating} icon="star" disabled />
+                </Item.Extra>
+                <Item.Extra as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Extra>
                 <Item.Extra>
                   {this.renderCategories(product.categories)}
                 </Item.Extra>
                 <Item.Meta as="h4">Item Description</Item.Meta>
-                <Item.Description as="pre">{product.description}</Item.Description>
+                <Item.Description as={Markdown}>{product.description}</Item.Description>
                 {product.quantity > 0 ?
                   <Form name="quantity" onSubmit={(event) => this.handleQuantitySubmit(event, product)}>
                     <Form.Input id="quantity" label="Quantity" value={this.state.quantity} onChange={this.handleChange('quantity')} action={{ labelPosition: 'left', icon: 'add to cart', content: 'Add to Cart' }} />
