@@ -22,7 +22,7 @@ const AuthForm = (props) => {
       <Form onSubmit={handleSubmit} name={name}>
       <Form.Group>
         <Form.Field>
-          <Input placeholder="Email Address" name="email" />
+          <Input placeholder="Email Address" name="email" icon="at" iconPosition="left"/>
         </Form.Field>
         <Form.Field>
           <Input icon="lock" iconPosition="left" placeholder="Password" name="password" type="password"/>
@@ -32,10 +32,10 @@ const AuthForm = (props) => {
         <Form.Group>
 
           <Form.Field>
-            <Input placeholder="First Name" name="firstName" />
+            <Input placeholder="First Name" name="firstName" icon="user" iconPosition="left"/>
           </Form.Field>
           <Form.Field>
-          <Input placeholder="Last Name" name="lastName" />
+          <Input placeholder="Last Name" name="lastName" icon="user" iconPosition="left"/>
         </Form.Field>
         </Form.Group>
         }
