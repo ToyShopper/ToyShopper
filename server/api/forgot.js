@@ -13,7 +13,6 @@ const transporter = nodemailer.createTransport({
 
 
 router.post('/', (req, res, next) => {
-  console.log('hits post')
   let token = crypto.randomBytes(20).toString('hex');
   User.findOne({
     where: {

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { fetchOrder, updateOrderStatus } from '../store/order';
 import { Item, Segment, Step } from 'semantic-ui-react';
 
+
 class OrderDetail extends Component {
   componentDidMount() {
     this.props.loadOrder();
