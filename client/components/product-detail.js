@@ -19,6 +19,7 @@ class ProductDetail extends Component {
       rating: 5,
       text: '',
       quantity: 1,
+      newCategoryName: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleQuantitySubmit = this.handleQuantitySubmit.bind(this);
@@ -78,7 +79,7 @@ class ProductDetail extends Component {
           <Comment.Author>{!review.user ? '' : review.user.fullName}</Comment.Author>
           <Rating maxRating={5} defaultRating={review.rating} icon="star" disabled />
           <Comment.Metadata>
-            Written on {new Date(review.createdAt).toTimeString()}
+            Written on {new Date(review.createdAt).toDateString()}, {new Date(review.createdAt).toTimeString()}
           </Comment.Metadata>
           <Comment.Text>{review.text}</Comment.Text>
         </Comment.Content>
@@ -123,7 +124,7 @@ class ProductDetail extends Component {
     return (
       <Dropdown
         button size="small" className="icon" icon="tag" floating labeled search
-        options={categoryOptions} defaultValue={{}} text="Add a new category"
+        options={categoryOptions} text="Add A Category To This Product"
       />
     );
   }
@@ -143,7 +144,7 @@ class ProductDetail extends Component {
                   onClick={() => removeCategoryFromProduct(product, category)}>X</Label>}
             </Label>))}
         </Item>
-        <Item>{this.renderAddCategoryBox()}</Item>
+        <Item>{isAdmin && this.renderAddCategoryBox()}</Item>
       </Item.Group>)
   }
 
