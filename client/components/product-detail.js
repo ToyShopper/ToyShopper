@@ -123,7 +123,7 @@ class ProductDetail extends Component {
     return (
       <Dropdown
         button size="small" className="icon" icon="tag" floating labeled search
-        options={categoryOptions} text="Add a new category"
+        options={categoryOptions} defaultValue={{}} text="Add a new category"
       />
     );
   }

@@ -13,12 +13,14 @@ const AuthForm = (props) => {
 
   return (
     <div>
+      <h1>Please {displayName}</h1>
+      <Divider clearing />
       <Grid
       textAlign="center"
       style={{ height: '100%' }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
       <Segment.Group compact>
-      <Segment compact color="grey" className="authForm">
+      <Segment compact className="authForm">
       <Form onSubmit={handleSubmit} name={name}>
       <Form.Group>
         <Form.Field>
