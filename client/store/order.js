@@ -30,6 +30,8 @@ export const updateOrderStatus = order => dispatch => {
     dispatch(updateOrder(res.data))
   })
   .catch(err => console.log(err));
+  axios.post('/api/orderStatusChange/' + order.id, order)
+  .catch(err => console.log(err));
 }
 
 // REDUCER

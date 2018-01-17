@@ -10,7 +10,7 @@ router.use('/reviews', require('./reviews'));
 router.use('/mail', require('./mail'));
 router.use('/forgot', require('./forgot'));
 router.use('/reset', require('./reset'));
-
+router.use('/orderStatusChange', require('./orderStatusChange'));
 
 router.use((req, res, next) => {
   const error = new Error('Not Found');
