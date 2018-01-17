@@ -95,11 +95,11 @@ function findAverageRating(product) {
   return 5;
 }
 
-router.post('/:productId/categories/:categoryId', async (req, res, next) => {
+router.post('/:productId/categories/', async (req, res, next) => {
   try {
-    const { productId, categoryId } = req.params;
+    const { productId } = req.params;
     const product = await Product.findById(productId);
-    const category = await Category.findById(categoryId);
+    const category = await Category.findById(req.body.id);
     if (category) {
       const result = await product.addCategory(category);
       res.status(201).json(result);

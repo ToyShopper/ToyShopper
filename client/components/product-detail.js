@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchProductDetail, deleteCategoryFromProduct } from '../store/product';
+import { fetchProductDetail, addNewCategoryToProduct, deleteCategoryFromProduct } from '../store/product';
 import { addToCart } from '../store/cart';
 import { fetchReviewsForProduct, addReview } from '../store/reviews';
-import { Item, Comment, Form, Header, Rating, Segment, Button, Divider, Label, Dropdown } from 'semantic-ui-react'
+import { fetchAllCategories } from '../store/categories';
+import { Item, Comment, Form, Header, Rating, Segment, Button, Divider, Label, Dropdown } from 'semantic-ui-react';
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -25,6 +26,7 @@ class ProductDetail extends Component {
   componentDidMount() {
     this.props.loadProductDetail();
     this.props.loadReviews();
+    this.props.loadAllCategories();
   }
 
   handleChange(name) {
@@ -48,21 +50,21 @@ class ProductDetail extends Component {
     this.props.addItemToCart(item);
   }
 
-  handleRatingChange(event, {rating}) {
-    this.setState({rating});
+  handleRatingChange(event, { rating }) {
+    this.setState({ rating });
   }
 
   handleSubmitReview() {
     return (event) => {
-    const {submitReview} = this.props;
-    const {rating, text} = this.state;
-    const newReview = {
-      rating: rating,
-      text: text,
-      productId: Number(this.props.match.params.id),
-    };
-    this.setState({ text: '', rating: 5 });
-    submitReview(newReview);
+      const { submitReview } = this.props;
+      const { rating, text } = this.state;
+      const newReview = {
+        rating: rating,
+        text: text,
+        productId: Number(this.props.match.params.id),
+      };
+      this.setState({ text: '', rating: 5 });
+      submitReview(newReview);
     }
   }
 
@@ -87,58 +89,60 @@ class ProductDetail extends Component {
       <Form name="review" reply onSubmit={this.handleSubmitReview()}>
         <h3>Write a review for this product</h3>
         <Form.TextArea
-        cols={100} rows={10} value={this.state.text}
-        onChange={this.handleChange('text')} />
+          cols={100} rows={10} value={this.state.text}
+          onChange={this.handleChange('text')} />
         <Form.Group>
           <h4>Give a rating: </h4>
           <Rating
-          maxRating={5} defaultRating={5} icon="star"
-          onRate={this.handleRatingChange} />
+            maxRating={5} defaultRating={5} icon="star"
+            onRate={this.handleRatingChange} />
           <Form.Button content="Add Review" position="right" labelPosition="left" icon="edit" primary />
         </Form.Group>
       </Form>)
   }
 
   renderAddCategoryBox() {
-    const {product} = this.props;
+    const { product, categories, addCategoryToProduct } = this.props;
 
-    // TODO: change product.categories to all categories except
-    // the ones that are on this product
-    const categoryOptions = product.categories.map(category => ({
+    // filter out categories this product already has
+    const filteredCategories = categories.filter(category =>
+      product.categories.findIndex(productCategory =>
+        productCategory.id === category.id) === -1
+    );
+    const categoryOptions = filteredCategories.map(category => ({
       key: category.id,
       text: category.name,
-      value: category.name,
+      value: category,
+      onClick: (event, data) => {
+        addCategoryToProduct(product, data.value)
+      },
     }));
 
     return (
-    <Dropdown
-      button size="small"
-      className="icon"
-      floating
-      labeled
-      icon="tag"
-      options={categoryOptions}
-      search
-      text="Add a new category"
-    />
+      <Dropdown
+        button size="small" className="icon" icon="tag" floating labeled search
+        options={categoryOptions} text="Add a new category"
+      />
     );
   }
 
   renderCategories(categories) {
-    const { isAdmin, product, removeCategoryFromProduct} = this.props;
+    const { isAdmin, product, removeCategoryFromProduct } = this.props;
 
     return (
-      <div>
-      {categories.map(category => (
-      <Label key={category.id} tag>
-        {category.name}
-        {isAdmin &&
-        <Label
-        as={Button} color="red" floating circular
-        onClick={() => removeCategoryFromProduct(product, category)}>X</Label>}
-      </Label>))}
-      <div>{this.renderAddCategoryBox()}</div>
-      </div>)
+      <Item.Group>
+        <Item>
+          {categories.map(category => (
+            <Label key={category.id} tag>
+              {category.name}
+              {isAdmin &&
+                <Label
+                  as={Button} color="red" floating circular
+                  onClick={() => removeCategoryFromProduct(product, category)}>X</Label>}
+            </Label>))}
+        </Item>
+        <Item>{this.renderAddCategoryBox()}</Item>
+      </Item.Group>)
   }
 
   render() {
@@ -156,16 +160,16 @@ class ProductDetail extends Component {
               <Item.Content>
                 {isAdmin && <Item.Content as="h4">Product ID: {product.id}</Item.Content>}
                 <Item.Image size="large" src={product.imageURL} />
-                <Item.Extra as="h4">Price: ${Number(product.price).toFixed(2)}</Item.Extra>
+                <Item.Extra as="h3">Price: ${Number(product.price).toFixed(2)}</Item.Extra>
                 <Item.Extra>
                   {this.renderCategories(product.categories)}
                 </Item.Extra>
                 <Item.Meta as="h4">Item Description</Item.Meta>
                 <Item.Description as="pre">{product.description}</Item.Description>
                 {product.quantity > 0 ?
-                <Form name="quantity" onSubmit={(event) => this.handleQuantitySubmit(event, product)}>
-                  <Form.Input id="quantity" label="Quantity" value={this.state.quantity} onChange={this.handleChange('quantity')} action={{ labelPosition: 'left', icon: 'add to cart', content: 'Add to Cart' }} />
-                </Form> : <h4>This product is out of stock.</h4>}
+                  <Form name="quantity" onSubmit={(event) => this.handleQuantitySubmit(event, product)}>
+                    <Form.Input id="quantity" label="Quantity" value={this.state.quantity} onChange={this.handleChange('quantity')} action={{ labelPosition: 'left', icon: 'add to cart', content: 'Add to Cart' }} />
+                  </Form> : <h4>This product is out of stock.</h4>}
               </Item.Content>
             </Item>
           </Segment>
@@ -184,7 +188,7 @@ class ProductDetail extends Component {
 /* -----------------    CONTAINER     ------------------ */
 
 const mapState = ({ product, reviews, user, categories }) => ({
-  product, reviews,
+  product, reviews, categories,
   isAdmin: user && user.role === 'admin',
   isLoggedIn: !!user.id,
 });
@@ -202,9 +206,15 @@ const mapDispatch = (dispatch, ownProps) => ({
   submitReview: (review) => {
     return dispatch(addReview(review));
   },
+  addCategoryToProduct: (product, category) => {
+    return dispatch(addNewCategoryToProduct(product, category));
+  },
   removeCategoryFromProduct: (product, category) => {
     return dispatch(deleteCategoryFromProduct(product, category));
-  }
+  },
+  loadAllCategories: () => {
+    return dispatch(fetchAllCategories());
+  },
 });
 
 export default connect(mapState, mapDispatch)(ProductDetail);

@@ -8,6 +8,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
+  // ideally there should be no two categories with the same name...
   Category.create(req.body)
   .then(category => res.json(category))
 })
